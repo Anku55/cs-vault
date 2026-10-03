@@ -1,1124 +1,1239 @@
+# Go Networking & net/http
 
-```markdown
-# Go Concurrency
-
-A complete roadmap for mastering concurrency in Go, from goroutines and channels to synchronization, worker pools, cancellation, concurrent data structures, and production-grade concurrency patterns.
+Complete roadmap for learning networking in Go, from TCP/UDP socket programming to production-grade HTTP servers, clients, middleware, connection management, streaming, and graceful shutdown.
 
 ---
 
-# 1. Concurrency Fundamentals
+# PART 1 — NETWORKING FUNDAMENTALS
 
-- [ ] What is concurrency?
-- [ ] What is parallelism?
-- [ ] Concurrency vs Parallelism
-- [ ] Sequential execution
-- [ ] Concurrent execution
-- [ ] Synchronous vs Asynchronous execution
-- [ ] CPU-bound vs I/O-bound workloads
-- [ ] Multitasking
-- [ ] Race conditions
-- [ ] Shared state
-- [ ] Critical sections
-- [ ] Thread safety
-- [ ] Data races
-- [ ] Deadlocks
-- [ ] Starvation
-- [ ] Livelocks
-- [ ] Lock contention
+## 1. Networking Basics
 
----
-
-# 2. Goroutines
-
-- [ ] What is a goroutine?
-- [ ] Creating goroutines
-- [ ] `go` keyword
-- [ ] Goroutine lifecycle
-- [ ] Main goroutine
-- [ ] Goroutine scheduling
-- [ ] Goroutine stack
-- [ ] Goroutine vs OS thread
-- [ ] Goroutine vs process
-- [ ] Lightweight concurrency
-- [ ] Multiple goroutines
-- [ ] Anonymous function goroutines
-- [ ] Goroutine closure capture
-- [ ] Loop variable problems
-- [ ] Goroutine synchronization
-- [ ] Waiting for goroutines
-- [ ] Goroutine leaks
-- [ ] Detecting goroutine leaks
-- [ ] Managing goroutine lifetime
-- [ ] Limiting goroutine creation
-- [ ] Goroutine ownership
-
-Example:
-
-```go
-go worker()
-```
+- [ ] Client-Server Architecture
+- [ ] Peer-to-Peer Architecture
+- [ ] IP Address
+- [ ] IPv4
+- [ ] IPv6
+- [ ] Private IP
+- [ ] Public IP
+- [ ] Loopback Address
+- [ ] `localhost`
+- [ ] Port
+- [ ] Socket
+- [ ] MAC Address
+- [ ] DNS
+- [ ] Domain Name
+- [ ] Hostname
+- [ ] Network Interface
+- [ ] Network Routing
+- [ ] NAT
+- [ ] Firewall Basics
 
 ---
 
-# 3. Go Scheduler
+# 2. OSI & TCP/IP
 
-- [ ] Go runtime scheduler
-- [ ] G-M-P model
-- [ ] Goroutine (G)
-- [ ] Machine/OS thread (M)
-- [ ] Processor (P)
-- [ ] Work stealing
-- [ ] Local run queue
-- [ ] Global run queue
-- [ ] Goroutine scheduling
-- [ ] Preemption
-- [ ] Cooperative vs asynchronous preemption
-- [ ] Blocking system calls
-- [ ] Scheduler behavior during blocking I/O
-- [ ] `GOMAXPROCS`
-- [ ] `runtime.GOMAXPROCS`
-- [ ] `runtime.NumGoroutine`
-- [ ] Scheduler tracing basics
+- [ ] OSI Model
+- [ ] TCP/IP Model
+- [ ] Application Layer
+- [ ] Transport Layer
+- [ ] Network Layer
+- [ ] Data Link Layer
+- [ ] TCP/IP Layer Mapping
+- [ ] Encapsulation
+- [ ] Decapsulation
+- [ ] Packets
+- [ ] Frames
+- [ ] Segments
+- [ ] MTU
+- [ ] Network addressing
 
 ---
 
-# 4. Channels
+# 3. TCP
 
-- [ ] What is a channel?
-- [ ] Creating channels
-- [ ] `make(chan T)`
-- [ ] Sending values
-- [ ] Receiving values
-- [ ] Blocking send
-- [ ] Blocking receive
-- [ ] Unbuffered channels
-- [ ] Buffered channels
-- [ ] Channel capacity
-- [ ] Channel length
-- [ ] Closing channels
-- [ ] Receiving from closed channels
-- [ ] Zero value from closed channel
-- [ ] `value, ok := <-ch`
-- [ ] Ranging over channels
-- [ ] Sending to closed channel
-- [ ] Receiving from nil channel
-- [ ] Sending to nil channel
-- [ ] Closing nil channel
-- [ ] Channel ownership
-
----
-
-# 5. Channel Directions
-
-- [ ] Bidirectional channels
-- [ ] Send-only channels
-- [ ] Receive-only channels
-- [ ] Channel type conversion
-- [ ] Restricting channel permissions
-- [ ] API design with directional channels
-
-Example:
-
-```go
-func producer(out chan<- int)
-func consumer(in <-chan int)
-```
+- [ ] What is TCP?
+- [ ] Connection-oriented communication
+- [ ] TCP 3-Way Handshake
+- [ ] SYN
+- [ ] SYN-ACK
+- [ ] ACK
+- [ ] TCP Connection Lifecycle
+- [ ] TCP Sequence Numbers
+- [ ] TCP Acknowledgements
+- [ ] TCP Retransmission
+- [ ] TCP Reliability
+- [ ] TCP Flow Control
+- [ ] TCP Congestion Control
+- [ ] TCP Receive Buffer
+- [ ] TCP Send Buffer
+- [ ] TCP Connection Termination
+- [ ] FIN
+- [ ] RST
+- [ ] TIME_WAIT
+- [ ] Keep-Alive
+- [ ] Half-Closed Connections
+- [ ] TCP Backlog
+- [ ] Connection Timeout
+- [ ] TCP Streams
 
 ---
 
-# 6. Select Statement
+# 4. UDP
 
-- [ ] `select`
-- [ ] Multiple channel operations
-- [ ] Blocking select
-- [ ] Non-blocking select
-- [ ] `default`
-- [ ] `select` with timeout
-- [ ] `select` with cancellation
-- [ ] Multiple ready channels
-- [ ] Random selection behavior
-- [ ] Nil channels in select
-- [ ] Closed channels in select
-- [ ] Dynamic channel management
-
-Example:
-
-```go
-select {
-case msg := <-ch:
-    // process
-case <-ctx.Done():
-    // cancel
-}
-```
+- [ ] What is UDP?
+- [ ] Connectionless communication
+- [ ] UDP Datagram
+- [ ] UDP vs TCP
+- [ ] UDP reliability
+- [ ] UDP packet loss
+- [ ] UDP ordering
+- [ ] UDP broadcasting
+- [ ] UDP multicasting
+- [ ] UDP use cases
+- [ ] Datagram size
+- [ ] UDP sockets
 
 ---
 
-# 7. Channel Patterns
-
-- [ ] Producer-Consumer
-- [ ] Pipeline
-- [ ] Fan-in
-- [ ] Fan-out
-- [ ] Worker pool
-- [ ] Broadcast
-- [ ] Pub/Sub
-- [ ] Multiplexing
-- [ ] Tee channel
-- [ ] Or-done channel
-- [ ] Done channel
-- [ ] Generator pattern
-- [ ] Channel ownership pattern
-- [ ] Channel-based synchronization
-- [ ] Channel-based state management
-
----
-
-# 8. Synchronization with WaitGroup
-
-- [ ] `sync.WaitGroup`
-- [ ] `Add`
-- [ ] `Done`
-- [ ] `Wait`
-- [ ] Waiting for multiple goroutines
-- [ ] Dynamic goroutine tracking
-- [ ] Correct WaitGroup usage
-- [ ] WaitGroup misuse
-- [ ] `Add` race problems
-- [ ] Reusing WaitGroups
-
-Example:
-
-```go
-var wg sync.WaitGroup
-
-wg.Add(1)
-
-go func() {
-    defer wg.Done()
-    worker()
-}()
-
-wg.Wait()
-```
-
----
-
-# 9. Mutex
-
-- [ ] `sync.Mutex`
-- [ ] Lock
-- [ ] Unlock
-- [ ] Critical section
-- [ ] Protecting shared state
-- [ ] Mutex ownership
-- [ ] Deferred unlock
-- [ ] Lock granularity
-- [ ] Coarse-grained locking
-- [ ] Fine-grained locking
-- [ ] Lock contention
-- [ ] Nested locks
-- [ ] Mutex deadlocks
-- [ ] Mutex copying
-- [ ] Zero-value Mutex
-
-Example:
-
-```go
-var mu sync.Mutex
-
-mu.Lock()
-counter++
-mu.Unlock()
-```
-
----
-
-# 10. RWMutex
-
-- [ ] `sync.RWMutex`
-- [ ] `RLock`
-- [ ] `RUnlock`
-- [ ] `Lock`
-- [ ] `Unlock`
-- [ ] Read-heavy workloads
-- [ ] Write-heavy workloads
-- [ ] Reader concurrency
-- [ ] Writer blocking
-- [ ] RWMutex vs Mutex
-- [ ] RWMutex performance
-- [ ] RWMutex pitfalls
-
----
-
-# 11. Once
-
-- [ ] `sync.Once`
-- [ ] One-time initialization
-- [ ] Lazy initialization
-- [ ] Thread-safe initialization
-- [ ] Singleton initialization
-- [ ] `sync.Once` semantics
-
-Example:
-
-```go
-var once sync.Once
-
-once.Do(func() {
-    initialize()
-})
-```
-
----
-
-# 12. Atomic Operations
-
-- [ ] Atomic operations
-- [ ] `sync/atomic`
-- [ ] Atomic load
-- [ ] Atomic store
-- [ ] Atomic add
-- [ ] Atomic swap
-- [ ] Compare-and-swap
-- [ ] CAS
-- [ ] Atomic counters
-- [ ] Atomic flags
-- [ ] Atomic pointers
-- [ ] Lock-free concepts
-- [ ] Memory ordering basics
-- [ ] When to use atomic vs mutex
-
----
-
-# 13. Condition Variables
-
-- [ ] `sync.Cond`
-- [ ] Condition variables
-- [ ] `Wait`
-- [ ] `Signal`
-- [ ] `Broadcast`
-- [ ] Producer-Consumer with `sync.Cond`
-- [ ] Condition-based synchronization
-- [ ] Spurious wakeup considerations
-- [ ] Cond vs Channel
-
----
-
-# 14. Once + Pool
-
-## sync.Pool
-
-- [ ] `sync.Pool`
-- [ ] Object pooling
-- [ ] Reusing temporary objects
-- [ ] Reducing allocations
-- [ ] GC interaction
-- [ ] Pool lifecycle
-- [ ] When to use `sync.Pool`
-- [ ] When NOT to use `sync.Pool`
-
----
-
-# 15. Concurrent Maps
-
-- [ ] Regular map concurrency limitations
-- [ ] Concurrent map access
-- [ ] `sync.Map`
-- [ ] `Load`
-- [ ] `Store`
-- [ ] `LoadOrStore`
-- [ ] `LoadAndDelete`
-- [ ] `Delete`
-- [ ] `Range`
-- [ ] `sync.Map` use cases
-- [ ] `sync.Map` vs map + Mutex
-- [ ] Read-heavy workloads
-
----
-
-# 16. Context Package
-
-- [ ] Why context exists
-- [ ] `context.Context`
-- [ ] `context.Background`
-- [ ] `context.TODO`
-- [ ] `context.WithCancel`
-- [ ] `context.WithTimeout`
-- [ ] `context.WithDeadline`
-- [ ] `context.WithValue`
-- [ ] Cancellation propagation
-- [ ] Cancellation signals
-- [ ] Deadline propagation
-- [ ] Timeout handling
-- [ ] Request cancellation
-- [ ] Context in HTTP handlers
-- [ ] Context in database operations
-- [ ] Context in goroutines
-- [ ] Avoiding context leaks
-- [ ] Context ownership
-- [ ] Context value best practices
-
----
-
-# 17. Cancellation Patterns
-
-- [ ] Manual cancellation
-- [ ] Cancellation with channels
-- [ ] Cancellation with context
-- [ ] Parent-child cancellation
-- [ ] Timeout cancellation
-- [ ] Deadline cancellation
-- [ ] Graceful cancellation
-- [ ] Cooperative cancellation
-- [ ] Cancelling worker pools
-- [ ] Cancelling pipelines
-- [ ] Cancelling network operations
-- [ ] Cancelling background jobs
-
----
-
-# 18. Worker Pools
-
-- [ ] Worker pool concept
-- [ ] Fixed worker pool
-- [ ] Dynamic worker pool
-- [ ] Job channel
-- [ ] Result channel
-- [ ] Worker lifecycle
-- [ ] Worker shutdown
-- [ ] Worker cancellation
-- [ ] Worker error handling
-- [ ] Worker retry
-- [ ] Worker timeout
-- [ ] Worker backpressure
-- [ ] Worker pool sizing
-- [ ] CPU-bound worker pools
-- [ ] I/O-bound worker pools
-
-Architecture:
-
-```text
-                 Jobs
-                  |
-                  v
-            +-----------+
-            | Job Queue |
-            +-----------+
-              |  |  |
-              v  v  v
-             W1 W2 W3
-              |  |  |
-              +--+--+
-                 |
-               Results
-```
-
----
-
-# 19. Producer-Consumer Pattern
-
-- [ ] Producer
-- [ ] Consumer
-- [ ] Shared queue
-- [ ] Channel-based queue
-- [ ] Buffered queue
-- [ ] Multiple producers
-- [ ] Multiple consumers
-- [ ] Backpressure
-- [ ] Queue capacity
-- [ ] Consumer shutdown
-- [ ] Producer shutdown
-- [ ] Graceful draining
-
----
-
-# 20. Fan-In
-
-- [ ] Fan-in concept
-- [ ] Multiple producers
-- [ ] Single output
-- [ ] Merging channels
-- [ ] Dynamic fan-in
-- [ ] Fan-in with WaitGroup
-- [ ] Fan-in with cancellation
-
-```text
-Producer 1 ──┐
-Producer 2 ──┼──> Output
-Producer 3 ──┘
-```
-
----
-
-# 21. Fan-Out
-
-- [ ] Fan-out concept
-- [ ] Multiple workers
-- [ ] Work distribution
-- [ ] Load balancing
-- [ ] Static fan-out
-- [ ] Dynamic fan-out
-- [ ] Fan-out with worker pools
-
-```text
-             ┌──> Worker 1
-Input ───────┼──> Worker 2
-             └──> Worker 3
-```
-
----
-
-# 22. Pipelines
-
-- [ ] Pipeline architecture
-- [ ] Pipeline stages
-- [ ] Stage isolation
-- [ ] Channels between stages
-- [ ] Pipeline cancellation
-- [ ] Pipeline error handling
-- [ ] Pipeline backpressure
-- [ ] Pipeline shutdown
-- [ ] Preventing goroutine leaks
-
-```text
-Input
-  ↓
-Stage 1
-  ↓
-Stage 2
-  ↓
-Stage 3
-  ↓
-Output
-```
-
----
-
-# 23. Backpressure
-
-- [ ] What is backpressure?
-- [ ] Producer faster than consumer
-- [ ] Consumer faster than producer
-- [ ] Bounded queues
-- [ ] Buffered channels
-- [ ] Blocking producers
-- [ ] Dropping messages
-- [ ] Rate limiting
-- [ ] Queue limits
-- [ ] Load shedding
-- [ ] Backpressure propagation
-- [ ] Backpressure in pipelines
-- [ ] Backpressure in streaming systems
-
----
-
-# 24. Rate Limiting
-
-- [ ] Why rate limiting?
-- [ ] Token bucket
-- [ ] Leaky bucket
-- [ ] Fixed window
-- [ ] Sliding window
-- [ ] Channel-based rate limiter
-- [ ] `time.Ticker`
-- [ ] Distributed rate limiting
-- [ ] Per-user rate limiting
-- [ ] Global rate limiting
-
----
-
-# 25. Timers & Tickers
-
-- [ ] `time.Timer`
-- [ ] `time.Ticker`
-- [ ] `time.After`
-- [ ] Timer reset
-- [ ] Timer stop
-- [ ] Ticker stop
-- [ ] Periodic jobs
-- [ ] Timeouts
-- [ ] Scheduled tasks
-- [ ] Timer leaks
-
----
-
-# 26. Deadlocks
-
-- [ ] What is deadlock?
-- [ ] Circular wait
-- [ ] Mutual exclusion
-- [ ] Hold and wait
-- [ ] No preemption
-- [ ] Lock ordering
-- [ ] Nested locks
-- [ ] Channel deadlocks
-- [ ] Nil channel deadlocks
-- [ ] Closed channel behavior
-- [ ] Detecting deadlocks
-- [ ] Preventing deadlocks
-
----
-
-# 27. Race Conditions
-
-- [ ] What is a race condition?
-- [ ] Data race
-- [ ] Shared variables
-- [ ] Concurrent map access
-- [ ] Race detector
-- [ ] `go test -race`
-- [ ] `go run -race`
-- [ ] Protecting shared state
-- [ ] Mutex solution
-- [ ] Channel solution
-- [ ] Atomic solution
-
----
-
-# 28. Goroutine Leaks
-
-- [ ] What is a goroutine leak?
-- [ ] Blocked goroutines
-- [ ] Unread channels
-- [ ] Unclosed pipelines
-- [ ] Forgotten workers
-- [ ] Missing cancellation
-- [ ] Infinite goroutines
-- [ ] Detecting leaks
-- [ ] Preventing leaks
-- [ ] Graceful goroutine shutdown
-
----
-
-# 29. Graceful Shutdown
-
-- [ ] Graceful shutdown concept
-- [ ] Shutdown signals
-- [ ] `os.Signal`
-- [ ] `signal.Notify`
-- [ ] Context cancellation
-- [ ] Stop accepting new work
-- [ ] Finish existing work
-- [ ] Close channels
-- [ ] Close connections
-- [ ] Stop workers
-- [ ] Flush buffers
-- [ ] Persist pending data
-- [ ] Shutdown timeout
-
----
-
-# 30. Concurrent State Management
-
-- [ ] Shared mutable state
-- [ ] Immutable state
-- [ ] State ownership
-- [ ] Actor-like patterns
-- [ ] Mutex-protected state
-- [ ] Channel-owned state
-- [ ] Atomic state
-- [ ] State machine pattern
-- [ ] Single-owner goroutine
-
----
-
-# 31. Channel Ownership
-
-- [ ] Who creates a channel?
-- [ ] Who sends?
-- [ ] Who receives?
-- [ ] Who closes?
-- [ ] Producer owns close
-- [ ] Consumer should not close producer channels
-- [ ] Channel lifecycle
-- [ ] Ownership transfer
-- [ ] Preventing accidental close
-
----
-
-# 32. Error Handling in Concurrent Programs
-
-- [ ] Errors from goroutines
-- [ ] Error channels
-- [ ] Result channels
-- [ ] Propagating errors
-- [ ] Multiple goroutine errors
-- [ ] First-error strategy
-- [ ] Collecting all errors
-- [ ] `errgroup`
-- [ ] Cancellation on error
-- [ ] Worker failure
-- [ ] Retry after failure
-
----
-
-# 33. errgroup
-
-- [ ] `errgroup.Group`
-- [ ] `Go`
-- [ ] `Wait`
-- [ ] Error propagation
-- [ ] Context cancellation
-- [ ] Parallel task execution
-- [ ] Fail-fast behavior
-- [ ] Bounded concurrency
-
----
-
-# 34. Concurrency Patterns for HTTP Servers
-
-- [ ] Concurrent HTTP requests
-- [ ] Request goroutines
-- [ ] Shared state protection
-- [ ] Request cancellation
-- [ ] Request timeout
-- [ ] Connection limits
-- [ ] Worker pools
-- [ ] Background tasks
-- [ ] Graceful server shutdown
-- [ ] Preventing goroutine leaks
-
----
-
-# 35. Concurrency + Database
-
-- [ ] Concurrent database queries
-- [ ] Connection pools
-- [ ] DB connection limits
-- [ ] Transaction concurrency
-- [ ] Database locks
-- [ ] Context-aware queries
-- [ ] Query cancellation
-- [ ] Connection exhaustion
-- [ ] Pool sizing
-
----
-
-# 36. Concurrency + File I/O
-
-- [ ] Concurrent file access
-- [ ] File locking
-- [ ] Buffered writes
-- [ ] Sequential writes
-- [ ] Concurrent reads
-- [ ] Append-only logs
-- [ ] Write serialization
-- [ ] File corruption risks
-- [ ] `fsync`
-- [ ] Durable writes
-
----
-
-# 37. Concurrency + Networking
-
-- [ ] Concurrent TCP connections
-- [ ] Connection-per-goroutine
-- [ ] Connection pooling
-- [ ] Read/write goroutines
-- [ ] Connection timeout
-- [ ] Idle connections
-- [ ] Keep-alive
-- [ ] Connection limits
-- [ ] Backpressure
-- [ ] Graceful connection shutdown
-
----
-
-# 38. Concurrent Data Structures
-
-- [ ] Thread-safe queue
-- [ ] Thread-safe stack
-- [ ] Concurrent map
-- [ ] Concurrent set
-- [ ] Blocking queue
-- [ ] Ring buffer
-- [ ] Lock-free queue concepts
-- [ ] Atomic counters
-- [ ] Concurrent cache
-- [ ] Work queue
-
----
-
-# 39. Memory Model
-
-- [ ] Go memory model
-- [ ] Happens-before
-- [ ] Synchronization
-- [ ] Memory visibility
-- [ ] Atomic operations
-- [ ] Mutex synchronization
-- [ ] Channel synchronization
-- [ ] Data race definition
-- [ ] Safe publication
-- [ ] Memory ordering basics
-
----
-
-# 40. Atomic & Lock-Free Programming
-
-- [ ] Compare-and-swap
-- [ ] CAS loops
-- [ ] Atomic counters
-- [ ] Atomic pointers
-- [ ] Lock-free concepts
-- [ ] Wait-free concepts
-- [ ] ABA problem
-- [ ] Memory reclamation concepts
-- [ ] When lock-free programming is useful
-- [ ] When NOT to use lock-free programming
-
----
-
-# 41. Performance & Concurrency
-
-- [ ] Throughput
+# 5. TCP vs UDP
+
+- [ ] Connection-oriented vs connectionless
+- [ ] Reliability
+- [ ] Ordering
+- [ ] Flow control
+- [ ] Congestion control
 - [ ] Latency
-- [ ] Parallelism
-- [ ] CPU utilization
-- [ ] Lock contention
-- [ ] Goroutine overhead
-- [ ] Channel overhead
-- [ ] Context overhead
-- [ ] Memory allocation
-- [ ] Garbage collection
-- [ ] Batching
-- [ ] Work stealing
-- [ ] False sharing
-- [ ] Cache locality
+- [ ] Overhead
+- [ ] Streaming vs datagrams
+- [ ] When to use TCP
+- [ ] When to use UDP
 
 ---
 
-# 42. Benchmarking Concurrent Code
+# PART 2 — GO NETWORKING
 
-- [ ] `testing.B`
-- [ ] Benchmarks
-- [ ] Parallel benchmarks
-- [ ] `b.RunParallel`
-- [ ] Throughput measurement
-- [ ] Latency measurement
-- [ ] Contention benchmarks
-- [ ] CPU profiling
-- [ ] Memory profiling
+# 6. Go `net` Package
+
+- [ ] `net` package
+- [ ] `net.Conn`
+- [ ] `net.Listener`
+- [ ] `net.TCPConn`
+- [ ] `net.TCPListener`
+- [ ] `net.UDPConn`
+- [ ] `net.UDPAddr`
+- [ ] `net.IP`
+- [ ] `net.IPAddr`
+- [ ] `net.TCPAddr`
+- [ ] `net.ResolveTCPAddr`
+- [ ] `net.ResolveUDPAddr`
+
+---
+
+# 7. TCP Server
+
+- [ ] `net.Listen`
+- [ ] Listening on an address
+- [ ] Port binding
+- [ ] `Listener.Accept`
+- [ ] Accept loop
+- [ ] Connection handling
+- [ ] `Conn.Read`
+- [ ] `Conn.Write`
+- [ ] `Conn.Close`
+- [ ] Handling multiple connections
+- [ ] Connection-per-goroutine
+- [ ] Server shutdown
+
+Basic architecture:
+
+    Client
+       |
+       | TCP
+       v
+    Listener
+       |
+       v
+    Accept()
+       |
+       v
+    Connection
+       |
+       v
+    Goroutine
+
+---
+
+# 8. TCP Client
+
+- [ ] `net.Dial`
+- [ ] `net.DialTimeout`
+- [ ] `net.Dialer`
+- [ ] Establishing TCP connection
+- [ ] Reading responses
+- [ ] Writing requests
+- [ ] Closing connections
+- [ ] Connection timeout
+- [ ] Retry connection
+- [ ] Reconnecting
+
+---
+
+# 9. TCP Message Framing
+
+TCP is a byte stream, so learn:
+
+- [ ] Why TCP has no message boundaries
+- [ ] Message framing
+- [ ] Fixed-length messages
+- [ ] Delimiter-based protocol
+- [ ] Length-prefixed messages
+- [ ] Header + payload
+- [ ] Binary protocol
+- [ ] Text protocol
+- [ ] Partial reads
+- [ ] Partial writes
+- [ ] Buffering
+- [ ] Message size limits
+
+This is extremely important for your Event Streaming Engine.
+
+---
+
+# 10. TCP Connection Management
+
+- [ ] Connection timeout
+- [ ] Read deadline
+- [ ] Write deadline
+- [ ] `SetDeadline`
+- [ ] `SetReadDeadline`
+- [ ] `SetWriteDeadline`
+- [ ] Keep-alive
+- [ ] Idle connections
+- [ ] Connection limits
+- [ ] Connection pooling
+- [ ] Connection reuse
+- [ ] Reconnection
+- [ ] Connection failure
+- [ ] Graceful connection close
+
+---
+
+# 11. Go `io` Package
+
+Learn these interfaces deeply:
+
+- [ ] `io.Reader`
+- [ ] `io.Writer`
+- [ ] `io.ReadWriter`
+- [ ] `io.ReadCloser`
+- [ ] `io.WriteCloser`
+- [ ] `io.ReadWriteCloser`
+- [ ] `io.Copy`
+- [ ] `io.CopyN`
+- [ ] `io.LimitReader`
+- [ ] `io.MultiReader`
+- [ ] `io.MultiWriter`
+- [ ] `io.TeeReader`
+- [ ] `io.Pipe`
+
+---
+
+# 12. Buffered Networking
+
+- [ ] `bufio.Reader`
+- [ ] `bufio.Writer`
+- [ ] `Read`
+- [ ] `ReadBytes`
+- [ ] `ReadString`
+- [ ] `ReadLine`
+- [ ] `Write`
+- [ ] `Flush`
+- [ ] Buffer size
+- [ ] Buffered network communication
+- [ ] Performance implications
+
+---
+
+# 13. UDP in Go
+
+- [ ] `net.ListenUDP`
+- [ ] `net.DialUDP`
+- [ ] `ReadFromUDP`
+- [ ] `WriteToUDP`
+- [ ] `UDPAddr`
+- [ ] UDP server
+- [ ] UDP client
+- [ ] Datagram handling
+- [ ] UDP timeouts
+- [ ] Packet size
+
+---
+
+# 14. DNS in Go
+
+- [ ] DNS basics
+- [ ] DNS resolution
+- [ ] `net.LookupHost`
+- [ ] `net.LookupIP`
+- [ ] `net.LookupAddr`
+- [ ] `net.Resolver`
+- [ ] Custom DNS resolver
+- [ ] DNS caching concepts
+- [ ] DNS timeout
+- [ ] DNS failure handling
+
+---
+
+# 15. TLS / HTTPS
+
+- [ ] TLS basics
+- [ ] HTTPS
+- [ ] Certificates
+- [ ] Certificate Authority
+- [ ] Public/private keys
+- [ ] TLS handshake
+- [ ] Certificate verification
+- [ ] `crypto/tls`
+- [ ] `tls.Config`
+- [ ] TLS server
+- [ ] TLS client
+- [ ] `ListenAndServeTLS`
+- [ ] `tls.Dial`
+- [ ] Server certificates
+- [ ] Client certificates
+- [ ] Mutual TLS
+- [ ] TLS versions
+- [ ] Certificate rotation
+
+---
+
+# 16. Network Errors
+
+- [ ] Connection refused
+- [ ] Connection reset
+- [ ] Connection timeout
+- [ ] DNS failure
+- [ ] Broken pipe
+- [ ] EOF
+- [ ] Temporary network errors
+- [ ] Retryable errors
+- [ ] Non-retryable errors
+- [ ] Error wrapping
+- [ ] Network error classification
+
+---
+
+# 17. Network Timeouts
+
+- [ ] Dial timeout
+- [ ] Connection timeout
+- [ ] Read timeout
+- [ ] Write timeout
+- [ ] Request timeout
+- [ ] Idle timeout
+- [ ] Server timeout
+- [ ] Client timeout
+- [ ] Context timeout
+- [ ] Deadline vs timeout
+
+---
+
+# 18. Connection Pooling
+
+- [ ] Why connection pooling?
+- [ ] TCP connection reuse
+- [ ] HTTP connection reuse
+- [ ] Database connection pooling
+- [ ] Maximum connections
+- [ ] Idle connections
+- [ ] Connection lifetime
+- [ ] Pool exhaustion
+- [ ] Connection cleanup
+
+---
+
+# PART 3 — HTTP FUNDAMENTALS
+
+# 19. HTTP Basics
+
+- [ ] What is HTTP?
+- [ ] HTTP request
+- [ ] HTTP response
+- [ ] Request line
+- [ ] Status line
+- [ ] Headers
+- [ ] Body
+- [ ] HTTP methods
+- [ ] HTTP status codes
+- [ ] HTTP versions
+
+---
+
+# 20. HTTP Methods
+
+- [ ] GET
+- [ ] POST
+- [ ] PUT
+- [ ] PATCH
+- [ ] DELETE
+- [ ] HEAD
+- [ ] OPTIONS
+- [ ] CONNECT
+- [ ] TRACE
+- [ ] Safe methods
+- [ ] Idempotent methods
+
+---
+
+# 21. HTTP Status Codes
+
+## 1xx
+
+- [ ] 100 Continue
+- [ ] 101 Switching Protocols
+
+## 2xx
+
+- [ ] 200 OK
+- [ ] 201 Created
+- [ ] 202 Accepted
+- [ ] 204 No Content
+
+## 3xx
+
+- [ ] 301 Moved Permanently
+- [ ] 302 Found
+- [ ] 304 Not Modified
+- [ ] 307 Temporary Redirect
+- [ ] 308 Permanent Redirect
+
+## 4xx
+
+- [ ] 400 Bad Request
+- [ ] 401 Unauthorized
+- [ ] 403 Forbidden
+- [ ] 404 Not Found
+- [ ] 405 Method Not Allowed
+- [ ] 408 Request Timeout
+- [ ] 409 Conflict
+- [ ] 413 Content Too Large
+- [ ] 415 Unsupported Media Type
+- [ ] 422 Unprocessable Content
+- [ ] 429 Too Many Requests
+
+## 5xx
+
+- [ ] 500 Internal Server Error
+- [ ] 501 Not Implemented
+- [ ] 502 Bad Gateway
+- [ ] 503 Service Unavailable
+- [ ] 504 Gateway Timeout
+
+---
+
+# 22. HTTP Headers
+
+- [ ] Request headers
+- [ ] Response headers
+- [ ] `Content-Type`
+- [ ] `Content-Length`
+- [ ] `Accept`
+- [ ] `Authorization`
+- [ ] `User-Agent`
+- [ ] `Host`
+- [ ] `Connection`
+- [ ] `Cache-Control`
+- [ ] `ETag`
+- [ ] `Last-Modified`
+- [ ] `Location`
+- [ ] `Cookie`
+- [ ] `Set-Cookie`
+- [ ] `Origin`
+- [ ] `Referer`
+- [ ] CORS headers
+- [ ] Security headers
+
+---
+
+# PART 4 — GO `net/http`
+
+# 23. `net/http` Package
+
+- [ ] `http.Server`
+- [ ] `http.Client`
+- [ ] `http.Request`
+- [ ] `http.Response`
+- [ ] `http.Handler`
+- [ ] `http.HandlerFunc`
+- [ ] `http.ServeMux`
+- [ ] `http.DefaultServeMux`
+- [ ] `http.DefaultClient`
+- [ ] `http.DefaultTransport`
+
+---
+
+# 24. HTTP Server
+
+- [ ] `http.ListenAndServe`
+- [ ] `http.Server`
+- [ ] `Server.ListenAndServe`
+- [ ] Server configuration
+- [ ] Server address
+- [ ] Server timeouts
+- [ ] ReadTimeout
+- [ ] ReadHeaderTimeout
+- [ ] WriteTimeout
+- [ ] IdleTimeout
+- [ ] MaxHeaderBytes
+
+---
+
+# 25. HTTP Handlers
+
+- [ ] `http.Handler`
+- [ ] `http.HandlerFunc`
+- [ ] `ServeHTTP`
+- [ ] Handler composition
+- [ ] Handler registration
+- [ ] Handler lifecycle
+- [ ] Request context
+- [ ] Response writer
 
 Example:
 
-```bash
-go test -bench=.
-```
+    func handler(w http.ResponseWriter, r *http.Request) {
+        // request handling
+    }
 
 ---
 
-# 43. Race Detection
+# 26. ServeMux
 
-- [ ] Go race detector
-- [ ] `go test -race`
-- [ ] `go run -race`
-- [ ] `go build -race`
-- [ ] Understanding race reports
-- [ ] Finding shared-state bugs
-- [ ] Fixing race conditions
-
----
-
-# 44. Profiling Concurrent Programs
-
-- [ ] `runtime/pprof`
-- [ ] CPU profiling
-- [ ] Memory profiling
-- [ ] Goroutine profiling
-- [ ] Block profiling
-- [ ] Mutex profiling
-- [ ] Execution tracing
-- [ ] `go tool pprof`
-- [ ] `go tool trace`
+- [ ] `http.NewServeMux`
+- [ ] Route registration
+- [ ] Path matching
+- [ ] Method-based routing
+- [ ] Path parameters
+- [ ] Wildcards
+- [ ] Route precedence
+- [ ] Subrouters concept
+- [ ] Custom mux
 
 ---
 
-# 45. Production Concurrency
+# 27. Request Object
 
-- [ ] Goroutine limits
-- [ ] Worker pool sizing
-- [ ] Queue limits
+Master:
+
+- [ ] `http.Request`
+- [ ] `Method`
+- [ ] `URL`
+- [ ] `Header`
+- [ ] `Body`
+- [ ] `Host`
+- [ ] `RemoteAddr`
+- [ ] `RequestURI`
+- [ ] `ContentLength`
+- [ ] `TransferEncoding`
+- [ ] `TLS`
+- [ ] `Context`
+
+---
+
+# 28. URL Handling
+
+- [ ] `net/url`
+- [ ] URL parsing
+- [ ] Scheme
+- [ ] Host
+- [ ] Path
+- [ ] RawQuery
+- [ ] Fragment
+- [ ] Query parameters
+- [ ] `url.Parse`
+- [ ] `url.Values`
+- [ ] URL encoding
+- [ ] URL decoding
+
+Important for your URL Shortener.
+
+---
+
+# 29. Query Parameters
+
+- [ ] Reading query parameters
+- [ ] `r.URL.Query()`
+- [ ] Multiple values
+- [ ] URL encoding
+- [ ] Validation
+- [ ] Default values
+- [ ] Pagination parameters
+- [ ] Filtering parameters
+- [ ] Sorting parameters
+
+---
+
+# 30. Path Parameters
+
+- [ ] Path variables
+- [ ] Route matching
+- [ ] Path extraction
+- [ ] Parameter validation
+- [ ] URL decoding
+- [ ] Path traversal considerations
+
+---
+
+# 31. Request Body
+
+- [ ] Reading request body
+- [ ] `r.Body`
+- [ ] `io.ReadAll`
+- [ ] Streaming request body
+- [ ] Request size limits
+- [ ] `http.MaxBytesReader`
+- [ ] JSON request body
+- [ ] Form data
+- [ ] Multipart form
+- [ ] File uploads
+
+---
+
+# 32. ResponseWriter
+
+- [ ] `http.ResponseWriter`
+- [ ] `Write`
+- [ ] `WriteHeader`
+- [ ] Headers
+- [ ] Status code
+- [ ] Response body
+- [ ] Header ordering
+- [ ] Content-Type
+- [ ] Response streaming
+
+---
+
+# 33. JSON APIs
+
+- [ ] `encoding/json`
+- [ ] JSON encoding
+- [ ] JSON decoding
+- [ ] Struct tags
+- [ ] `omitempty`
+- [ ] Request validation
+- [ ] Response models
+- [ ] Error responses
+- [ ] Consistent API response format
+- [ ] JSON content type
+
+---
+
+# 34. HTTP Middleware
+
+- [ ] What is middleware?
+- [ ] Middleware chaining
+- [ ] Logging middleware
+- [ ] Authentication middleware
+- [ ] Authorization middleware
+- [ ] Recovery middleware
+- [ ] CORS middleware
+- [ ] Rate limiting middleware
+- [ ] Request ID middleware
+- [ ] Metrics middleware
+- [ ] Timeout middleware
+
+Pattern:
+
+    Request
+       |
+       v
+    Logger
+       |
+       v
+    Auth
+       |
+       v
+    Rate Limiter
+       |
+       v
+    Handler
+
+---
+
+# 35. HTTP Client
+
+- [ ] `http.Client`
+- [ ] `http.Get`
+- [ ] `http.Post`
+- [ ] `http.NewRequest`
+- [ ] `client.Do`
+- [ ] Request headers
+- [ ] Request body
+- [ ] Response body
+- [ ] Response status
+- [ ] Client timeout
+- [ ] Context cancellation
+- [ ] Connection reuse
+
+---
+
+# 36. HTTP Transport
+
+- [ ] `http.Transport`
+- [ ] Connection pooling
+- [ ] Keep-alive
+- [ ] MaxIdleConns
+- [ ] MaxIdleConnsPerHost
+- [ ] MaxConnsPerHost
+- [ ] IdleConnTimeout
+- [ ] TLS configuration
+- [ ] Proxy configuration
+- [ ] DialContext
+- [ ] ResponseHeaderTimeout
+- [ ] ExpectContinueTimeout
+
+---
+
+# 37. HTTP Timeouts
+
+Server:
+
+- [ ] ReadTimeout
+- [ ] ReadHeaderTimeout
+- [ ] WriteTimeout
+- [ ] IdleTimeout
+
+Client:
+
+- [ ] Client.Timeout
+- [ ] Context timeout
+- [ ] Dial timeout
+- [ ] TLS handshake timeout
+- [ ] Response header timeout
+- [ ] Request deadline
+
+---
+
+# 38. HTTP Cookies
+
+- [ ] Cookies
+- [ ] `http.Cookie`
+- [ ] `Set-Cookie`
+- [ ] Reading cookies
+- [ ] Secure cookies
+- [ ] HttpOnly
+- [ ] SameSite
+- [ ] Cookie expiration
+- [ ] Session cookies
+- [ ] Cookie security
+
+---
+
+# 39. Sessions
+
+- [ ] Session concept
+- [ ] Session IDs
+- [ ] Server-side sessions
+- [ ] Cookie-based sessions
+- [ ] Session expiration
+- [ ] Session invalidation
+- [ ] Session storage
+- [ ] Distributed sessions
+
+---
+
+# 40. Authentication
+
+- [ ] Basic Authentication
+- [ ] Bearer tokens
+- [ ] JWT
+- [ ] API keys
+- [ ] Session authentication
+- [ ] Authentication middleware
+- [ ] Token validation
+- [ ] Token expiration
+- [ ] Refresh tokens
+
+---
+
+# 41. CORS
+
+- [ ] Same-Origin Policy
+- [ ] CORS
+- [ ] Simple requests
+- [ ] Preflight requests
+- [ ] OPTIONS
+- [ ] `Access-Control-Allow-Origin`
+- [ ] `Access-Control-Allow-Methods`
+- [ ] `Access-Control-Allow-Headers`
+- [ ] Credentials
+- [ ] CORS middleware
+
+---
+
+# 42. HTTP Redirects
+
+- [ ] HTTP redirects
+- [ ] 301
+- [ ] 302
+- [ ] 303
+- [ ] 307
+- [ ] 308
+- [ ] `http.Redirect`
+- [ ] Redirect behavior
+- [ ] Redirect loops
+
+Important for URL Shortener.
+
+---
+
+# 43. HTTP Streaming
+
+- [ ] Streaming response
+- [ ] `http.Flusher`
+- [ ] Flush
+- [ ] Chunked transfer
+- [ ] Server-Sent Events
+- [ ] Long polling
+- [ ] Streaming request body
+- [ ] Streaming response body
 - [ ] Backpressure
-- [ ] Timeouts
-- [ ] Cancellation
-- [ ] Retries
-- [ ] Exponential backoff
-- [ ] Circuit breakers
+- [ ] Connection lifetime
+
+---
+
+# 44. WebSockets
+
+- [ ] WebSocket concept
+- [ ] HTTP Upgrade
+- [ ] Persistent connection
+- [ ] Full-duplex communication
+- [ ] WebSocket client
+- [ ] WebSocket server
+- [ ] Ping/Pong
+- [ ] Connection lifecycle
+- [ ] WebSocket timeout
+- [ ] WebSocket concurrency
+
+---
+
+# 45. HTTP/2
+
+- [ ] HTTP/2 basics
+- [ ] Multiplexing
+- [ ] Streams
+- [ ] Frames
+- [ ] Header compression
+- [ ] Server push concept
+- [ ] HTTP/2 connection reuse
+- [ ] HTTP/2 in Go
+
+---
+
+# 46. HTTP/3
+
+- [ ] HTTP/3 basics
+- [ ] QUIC
+- [ ] UDP-based transport
+- [ ] HTTP/3 vs HTTP/2
+- [ ] QUIC streams
+- [ ] Connection migration
+- [ ] HTTP/3 use cases
+
+Advanced — learn after HTTP/1.1 and HTTP/2.
+
+---
+
+# 47. Graceful HTTP Shutdown
+
+- [ ] `Server.Shutdown`
+- [ ] Shutdown context
+- [ ] OS signals
+- [ ] Stop accepting new connections
+- [ ] Finish active requests
+- [ ] Close idle connections
+- [ ] Shutdown timeout
+- [ ] Cleanup background workers
+- [ ] Flush pending data
+
+---
+
+# 48. HTTP Security
+
+- [ ] HTTPS
+- [ ] TLS
+- [ ] Input validation
+- [ ] Request size limits
+- [ ] Header validation
+- [ ] Authentication
+- [ ] Authorization
+- [ ] CORS
+- [ ] CSRF
+- [ ] XSS
+- [ ] SQL injection
+- [ ] Path traversal
+- [ ] SSRF
+- [ ] Request smuggling concepts
+- [ ] Security headers
 - [ ] Rate limiting
-- [ ] Graceful shutdown
-- [ ] Resource cleanup
-- [ ] Connection limits
-- [ ] Memory limits
-- [ ] Monitoring
-- [ ] Metrics
-- [ ] Tracing
 
 ---
 
-# 46. Concurrency Patterns for Job Queues
+# 49. HTTP Reliability
 
-- [ ] Producer
-- [ ] Job queue
-- [ ] Worker pool
-- [ ] Multiple workers
-- [ ] Job acknowledgement
-- [ ] Job timeout
-- [ ] Retry
+- [ ] Timeouts
+- [ ] Retries
+- [ ] Retryable status codes
 - [ ] Exponential backoff
-- [ ] Dead-letter queue
-- [ ] Job cancellation
-- [ ] Priority queue
-- [ ] Scheduled jobs
-- [ ] Graceful worker shutdown
-- [ ] Worker health
+- [ ] Jitter
+- [ ] Circuit breaker
+- [ ] Rate limiting
+- [ ] Connection pooling
+- [ ] Idempotency
+- [ ] Request cancellation
+- [ ] Graceful degradation
+
+---
+
+# 50. HTTP Observability
+
+- [ ] Request logging
+- [ ] Structured logging
+- [ ] Request ID
+- [ ] Trace ID
+- [ ] Request duration
+- [ ] Status code metrics
+- [ ] Request count
+- [ ] Error rate
+- [ ] Latency
+- [ ] P50
+- [ ] P95
+- [ ] P99
+- [ ] OpenTelemetry
+- [ ] Prometheus metrics
+
+---
+
+# 51. HTTP Testing
+
+- [ ] `httptest`
+- [ ] `httptest.NewServer`
+- [ ] `httptest.NewRecorder`
+- [ ] Handler testing
+- [ ] Integration testing
+- [ ] HTTP client testing
+- [ ] Mock HTTP server
+- [ ] Request validation testing
+- [ ] Error response testing
+- [ ] Middleware testing
+- [ ] Timeout testing
+- [ ] Concurrent request testing
+
+---
+
+# 52. Advanced Networking
+
+- [ ] Connection pooling
+- [ ] Load balancing
+- [ ] Reverse proxy
+- [ ] Proxy servers
+- [ ] Forward proxy
+- [ ] Reverse proxy
+- [ ] Health checks
+- [ ] Service discovery
+- [ ] DNS-based discovery
+- [ ] Connection draining
+- [ ] Network backpressure
+- [ ] Network rate limiting
+- [ ] Network retries
+- [ ] Circuit breakers
+
+---
+
+# 53. Go Reverse Proxy
+
+- [ ] `httputil`
+- [ ] `httputil.NewSingleHostReverseProxy`
+- [ ] Reverse proxy architecture
+- [ ] Request forwarding
+- [ ] Response forwarding
+- [ ] Header forwarding
+- [ ] Proxy timeouts
+- [ ] Load balancing
+- [ ] Health checks
+
+---
+
+# 54. Production Networking
+
+- [ ] TCP connection limits
+- [ ] HTTP connection limits
+- [ ] Timeouts
+- [ ] Keep-alive
+- [ ] Connection pooling
 - [ ] Backpressure
-- [ ] Idempotent workers
+- [ ] Rate limiting
+- [ ] Retries
+- [ ] Circuit breakers
+- [ ] Graceful shutdown
+- [ ] TLS
+- [ ] Observability
+- [ ] Network metrics
+- [ ] Load testing
+- [ ] Network debugging
 
 ---
 
-# 47. Concurrency Patterns for Event Streaming
+# 55. Networking Tools
 
-- [ ] Concurrent producers
-- [ ] Concurrent consumers
-- [ ] Producer-consumer model
-- [ ] Topic management
-- [ ] Partition workers
-- [ ] Message ordering
-- [ ] Consumer groups
-- [ ] Partition assignment
-- [ ] Consumer rebalancing
-- [ ] Consumer lag
-- [ ] Backpressure
-- [ ] Batching
-- [ ] Message acknowledgement
-- [ ] Retry
-- [ ] Offset management
-- [ ] Concurrent log reads
-- [ ] Serialized log writes
-- [ ] Graceful consumer shutdown
+Learn to use:
+
+- [ ] `curl`
+- [ ] `wget`
+- [ ] `ping`
+- [ ] `traceroute`
+- [ ] `nslookup`
+- [ ] `dig`
+- [ ] `netstat`
+- [ ] `ss`
+- [ ] `lsof`
+- [ ] `telnet`
+- [ ] `nc` / netcat
+- [ ] Wireshark
+- [ ] tcpdump
 
 ---
 
-# 48. Advanced Topics
-
-- [ ] Work stealing
-- [ ] Lock-free algorithms
-- [ ] Wait-free algorithms
-- [ ] Actor model
-- [ ] CSP
-- [ ] Reactive patterns
-- [ ] Event loops
-- [ ] Async I/O concepts
-- [ ] Zero-copy concepts
-- [ ] Memory pooling
-- [ ] False sharing
-- [ ] Cache-line effects
-- [ ] NUMA basics
-- [ ] Advanced scheduler behavior
-- [ ] Runtime tracing
-
----
-
-# 49. Practical Concurrency Projects
+# 56. Practical Projects
 
 ## Beginner
 
-- [ ] Concurrent counter
-- [ ] Concurrent web scraper
-- [ ] Producer-consumer queue
-- [ ] Concurrent file processor
-- [ ] Parallel image processor
+- [ ] TCP Echo Server
+- [ ] TCP Echo Client
+- [ ] UDP Echo Server
+- [ ] UDP Echo Client
+- [ ] HTTP Server using `net/http`
+- [ ] HTTP Client
+- [ ] REST API
 
 ## Intermediate
 
-- [ ] Worker pool
-- [ ] Rate limiter
-- [ ] Concurrent cache
-- [ ] TCP server
-- [ ] Connection pool
-- [ ] Task scheduler
+- [ ] Concurrent TCP Server
+- [ ] HTTP Reverse Proxy
+- [ ] Rate Limiter
+- [ ] Connection Pool
+- [ ] WebSocket Server
+- [ ] File Upload Server
+- [ ] Streaming HTTP Server
 
 ## Advanced
 
-- [ ] Job queue
-- [ ] Distributed job queue
-- [ ] Event streaming engine
-- [ ] Message broker
-- [ ] Concurrent key-value store
-- [ ] Load balancer
+- [ ] URL Shortener
+- [ ] Load Balancer
+- [ ] Job Queue
+- [ ] TCP Message Broker
+- [ ] Event Streaming Engine
+- [ ] HTTP Proxy
+- [ ] Distributed Service
 
 ---
 
-# 50. Commands & Tools
+# 57. Learning Order
 
-```bash
-# Run program
-go run main.go
+Follow this order:
 
-# Run tests
-go test ./...
-
-# Race detector
-go test -race ./...
-
-# Benchmarks
-go test -bench=.
-
-# Coverage
-go test -cover ./...
-
-# CPU profiling
-go test -cpuprofile=cpu.out
-
-# Memory profiling
-go test -memprofile=mem.out
-
-# Vet
-go vet ./...
-
-# Format
-gofmt -w .
-
-# Run with race detector
-go run -race main.go
-```
-
----
-
-# Learning Order
-
-Follow this order instead of studying randomly:
-
-1. [ ] Concurrency vs Parallelism
-2. [ ] Goroutines
-3. [ ] Channels
-4. [ ] Buffered vs Unbuffered Channels
-5. [ ] Select
-6. [ ] WaitGroup
-7. [ ] Mutex
-8. [ ] RWMutex
-9. [ ] Atomic Operations
-10. [ ] Context
-11. [ ] Race Conditions
-12. [ ] Deadlocks
-13. [ ] Goroutine Leaks
-14. [ ] Producer-Consumer
-15. [ ] Worker Pools
-16. [ ] Fan-in / Fan-out
-17. [ ] Pipelines
-18. [ ] Backpressure
-19. [ ] Cancellation
-20. [ ] Graceful Shutdown
-21. [ ] Error Handling in Concurrent Programs
-22. [ ] errgroup
-23. [ ] Concurrent Data Structures
-24. [ ] Go Memory Model
-25. [ ] Performance
-26. [ ] Benchmarking
-27. [ ] Race Detection
-28. [ ] Profiling
-29. [ ] Production Concurrency
-30. [ ] Advanced Lock-Free Concepts
+1. [ ] Networking fundamentals
+2. [ ] TCP/IP
+3. [ ] TCP
+4. [ ] UDP
+5. [ ] Socket concepts
+6. [ ] Go `net`
+7. [ ] TCP server
+8. [ ] TCP client
+9. [ ] Message framing
+10. [ ] `io.Reader` / `io.Writer`
+11. [ ] Buffered I/O
+12. [ ] Connection management
+13. [ ] Timeouts
+14. [ ] DNS
+15. [ ] TLS
+16. [ ] HTTP fundamentals
+17. [ ] HTTP methods
+18. [ ] HTTP status codes
+19. [ ] HTTP headers
+20. [ ] `net/http`
+21. [ ] HTTP handlers
+22. [ ] ServeMux
+23. [ ] Request/Response
+24. [ ] JSON APIs
+25. [ ] Middleware
+26. [ ] HTTP Client
+27. [ ] HTTP Transport
+28. [ ] Connection pooling
+29. [ ] Authentication
+30. [ ] CORS
+31. [ ] HTTP streaming
+32. [ ] WebSockets
+33. [ ] Graceful shutdown
+34. [ ] HTTP security
+35. [ ] HTTP reliability
+36. [ ] HTTP observability
+37. [ ] HTTP testing
+38. [ ] Reverse proxy
+39. [ ] HTTP/2
+40. [ ] HTTP/3
+41. [ ] Production networking
 
 ---
 
-# Project Application Order
+# 58. Project Mapping
 
-Apply what you learn immediately:
+## URL Shortener
 
-## Project 1 — Concurrent Worker Pool
+Required:
 
-Learn:
-
-- Goroutines
-- Channels
-- WaitGroup
-- Mutex
-- Context
-- Worker pool
-- Cancellation
-
-↓
-
-## Project 2 — Job Queue
-
-Add:
-
-- Multiple workers
-- Retry
-- Backoff
-- Priority
-- Dead-letter queue
-- Job cancellation
-- Backpressure
-
-↓
-
-## Project 3 — Event Streaming Engine
-
-Add:
-
-- TCP
-- Concurrent producers
-- Concurrent consumers
-- Topics
-- Partitions
-- Offsets
-- Consumer groups
-- Message ordering
-- Append-only logs
-- Backpressure
-- Graceful shutdown
-
-↓
-
-## Project 4 — Production Backend
-
-Apply:
-
-- HTTP concurrency
-- Context
-- Database connection pools
-- Background workers
-- Rate limiting
-- Caching
-- Graceful shutdown
-- Observability
-- Load testing
+- [ ] HTTP
+- [ ] `net/http`
+- [ ] Request/Response
+- [ ] URL parsing
+- [ ] Path parameters
+- [ ] HTTP redirects
+- [ ] JSON
+- [ ] Middleware
+- [ ] HTTP client
+- [ ] Database
+- [ ] Redis
+- [ ] Rate limiting
+- [ ] Graceful shutdown
 
 ---
 
-# Mastery Checklist
+## Job Queue
 
-Before considering Go concurrency strong, I should be able to:
+Required:
 
-- [ ] Explain goroutines internally
-- [ ] Explain how Go schedules goroutines
-- [ ] Use channels correctly
-- [ ] Know when to use channels vs mutexes
-- [ ] Build a worker pool
-- [ ] Build a producer-consumer system
-- [ ] Build fan-in/fan-out pipelines
-- [ ] Implement cancellation
-- [ ] Implement graceful shutdown
-- [ ] Detect and fix race conditions
-- [ ] Detect and prevent deadlocks
-- [ ] Prevent goroutine leaks
-- [ ] Use atomic operations
-- [ ] Use `context.Context`
-- [ ] Use `errgroup`
-- [ ] Build concurrent data structures
-- [ ] Run the race detector
-- [ ] Benchmark concurrent code
-- [ ] Profile concurrent programs
-- [ ] Implement backpressure
-- [ ] Design bounded concurrency
-- [ ] Handle concurrent network connections
-- [ ] Handle concurrent database operations
-- [ ] Design reliable worker systems
-- [ ] Design concurrent message processing systems
-- [ ] Reason about correctness before optimizing
-```
+- [ ] TCP/HTTP
+- [ ] Goroutines
+- [ ] Channels
+- [ ] Worker pools
+- [ ] Context
+- [ ] Timeouts
+- [ ] Retry
+- [ ] Backoff
+- [ ] Connection management
+- [ ] Graceful shutdown
 
+---
+
+## Event Streaming Engine
+
+Required:
+
+- [ ] TCP
+- [ ] `net`
+- [ ] TCP server
+- [ ] TCP client
+- [ ] Message framing
+- [ ] Binary/text protocol
+- [ ] `io.Reader`
+- [ ] `io.Writer`
+- [ ] Buffering
+- [ ] Connection management
+- [ ] Goroutines
+- [ ] Channels
+- [ ] Backpressure
+- [ ] Timeouts
+- [ ] Append-only log
+- [ ] Topics
+- [ ] Partitions
+- [ ] Offsets
+- [ ] Consumer groups
+- [ ] Message ordering
+- [ ] Graceful shutdown
+
+---
+
+# 59. Mastery Checklist
+
+Before considering Go networking strong, I should be able to:
+
+- [ ] Build a TCP server from scratch
+- [ ] Build a TCP client from scratch
+- [ ] Handle multiple TCP clients concurrently
+- [ ] Design a simple TCP protocol
+- [ ] Implement message framing
+- [ ] Handle partial reads
+- [ ] Handle connection failures
+- [ ] Implement timeouts
+- [ ] Implement graceful connection shutdown
+- [ ] Build a UDP server
+- [ ] Resolve DNS using Go
+- [ ] Build a TLS server
+- [ ] Build an HTTP server using only `net/http`
+- [ ] Build an HTTP client
+- [ ] Implement middleware
+- [ ] Implement authentication middleware
+- [ ] Implement rate limiting
+- [ ] Implement request timeouts
+- [ ] Implement graceful HTTP shutdown
+- [ ] Implement HTTP streaming
+- [ ] Build a reverse proxy
+- [ ] Test HTTP services using `httptest`
+- [ ] Understand connection pooling
+- [ ] Understand HTTP/1.1
+- [ ] Understand HTTP/2
+- [ ] Understand HTTP/3 conceptually
+- [ ] Debug network problems using CLI tools
+- [ ] Load-test a network service
+- [ ] Monitor network service latency and throughput
+
+---
+
+# Priority for My Projects
+
+## Must Master
+
+- [ ] TCP
+- [ ] UDP basics
+- [ ] Go `net`
+- [ ] `io.Reader`
+- [ ] `io.Writer`
+- [ ] TCP Server
+- [ ] TCP Client
+- [ ] Message Framing
+- [ ] Connection Management
+- [ ] Timeouts
+- [ ] HTTP
+- [ ] `net/http`
+- [ ] HTTP Handlers
+- [ ] HTTP Client
+- [ ] Middleware
+- [ ] JSON
+- [ ] URL Handling
+- [ ] HTTP Redirects
+- [ ] Context
+- [ ] Graceful Shutdown
+- [ ] Testing
+
+## Important
+
+- [ ] TLS
+- [ ] DNS
+- [ ] Connection Pooling
+- [ ] Reverse Proxy
+- [ ] Rate Limiting
+- [ ] HTTP Streaming
+- [ ] WebSockets
+- [ ] HTTP/2
+- [ ] Observability
+
+## Advanced / Later
+
+- [ ] HTTP/3
+- [ ] QUIC
+- [ ] Custom DNS Resolver
+- [ ] Advanced TCP tuning
+- [ ] Zero-copy networking
+- [ ] Kernel networking
+- [ ] eBPF networking
+- [ ] Advanced network optimization
