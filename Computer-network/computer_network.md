@@ -1,7 +1,6 @@
-
-
-```markdown
 # Computer Networks Roadmap
+
+---
 
 # 1. Network Fundamentals ⭐⭐⭐⭐⭐
 
@@ -71,7 +70,7 @@
 
 ---
 
-# 4. Data Link Layer
+# 4. Data Link Layer ⭐⭐⭐⭐
 
 - [ ] Frames
 - [ ] MAC addresses
@@ -158,7 +157,7 @@
 
 ---
 
-# 8. ARP
+# 8. ARP ⭐⭐⭐⭐
 
 - [ ] ARP
 - [ ] ARP request
@@ -171,7 +170,7 @@
 
 ---
 
-# 9. ICMP
+# 9. ICMP ⭐⭐⭐⭐
 
 - [ ] ICMP
 - [ ] Echo request
@@ -237,12 +236,11 @@ Understand:
 ```text
 Client                  Server
 
-   SYN  ------------->
+  SYN  -------------------->
 
-        <------------- SYN + ACK
+       <--------------------  SYN + ACK
 
-   ACK  ------------->
-```
+  ACK  -------------------->
 
 ---
 
