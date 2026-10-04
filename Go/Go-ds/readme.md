@@ -1,4 +1,3 @@
-```markdown
 # Go Data Structures, Structs, Methods & Interfaces
 
 ---
@@ -75,14 +74,13 @@ These are the core data structures you will use throughout Go backend and system
 - [ ] Slice memory layout
 - [ ] Slice descriptor
 
-Conceptually:
+### Conceptual Structure
 
 ```text
 Slice
- ├── Pointer → underlying array
- ├── Length
- └── Capacity
-```
+├── Pointer → underlying array
+├── Length
+└── Capacity
 
 ## Slicing
 
