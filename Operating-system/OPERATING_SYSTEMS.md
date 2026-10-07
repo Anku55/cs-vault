@@ -1,18 +1,6 @@
-The highest-value area:
-
-- **Processes & threads**
-- **Concurrency & synchronization**
-- **Memory management**
-- **I/O & system calls**
-- **File systems**
-- **Networking from OS perspective**
-- **Scheduling**
-- **IPC**
-- **Linux fundamentals**
-- **OS concepts behind Go runtime**
-
-```markdown
 # Operating Systems Roadmap
+
+---
 
 # 1. OS Fundamentals ⭐⭐⭐⭐⭐
 
@@ -62,20 +50,20 @@ The highest-value area:
 - [ ] System call overhead
 - [ ] Trap instruction
 - [ ] Return from system call
-- [ ] open()
-- [ ] read()
-- [ ] write()
-- [ ] close()
-- [ ] fork()
-- [ ] exec()
-- [ ] wait()
-- [ ] exit()
-- [ ] mmap()
-- [ ] socket()
-- [ ] bind()
-- [ ] listen()
-- [ ] accept()
-- [ ] connect()
+- [ ] `open()`
+- [ ] `read()`
+- [ ] `write()`
+- [ ] `close()`
+- [ ] `fork()`
+- [ ] `exec()`
+- [ ] `wait()`
+- [ ] `exit()`
+- [ ] `mmap()`
+- [ ] `socket()`
+- [ ] `bind()`
+- [ ] `listen()`
+- [ ] `accept()`
+- [ ] `connect()`
 
 ---
 
@@ -84,7 +72,7 @@ The highest-value area:
 - [ ] What is a process?
 - [ ] Program vs process
 - [ ] Process address space
-- [ ] Process Control Block
+- [ ] Process Control Block (PCB)
 - [ ] PID
 - [ ] PPID
 - [ ] Process states
@@ -102,13 +90,13 @@ The highest-value area:
 
 ---
 
-# 5. Process Creation
+# 5. Process Creation ⭐⭐⭐⭐⭐
 
-- [ ] fork()
-- [ ] exec()
-- [ ] wait()
-- [ ] waitpid()
-- [ ] exit()
+- [ ] `fork()`
+- [ ] `exec()`
+- [ ] `wait()`
+- [ ] `waitpid()`
+- [ ] `exit()`
 - [ ] Copy-on-write
 - [ ] Parent/child relationship
 - [ ] Process inheritance
@@ -125,7 +113,7 @@ The highest-value area:
 - [ ] Process vs thread
 - [ ] User-level threads
 - [ ] Kernel-level threads
-- [ ] Thread Control Block
+- [ ] Thread Control Block (TCB)
 - [ ] Thread stack
 - [ ] Thread-local storage
 - [ ] Thread creation
@@ -137,21 +125,36 @@ The highest-value area:
 
 ---
 
-# 7. Process vs Thread
+# 7. Process vs Thread ⭐⭐⭐⭐⭐
 
 Understand deeply:
 
 ```text
 Process
 ├── Address Space
-├── Code
-├── Heap
-├── Global Data
+│   ├── Code / Text
+│   ├── Global Data
+│   ├── Heap
+│   └── Stack(s)
+│
 ├── File Descriptors
+├── Process State
+├── Process ID (PID)
 └── Threads
     ├── Thread 1
+    │   ├── Registers
+    │   ├── Program Counter
+    │   └── Stack
+    │
     ├── Thread 2
+    │   ├── Registers
+    │   ├── Program Counter
+    │   └── Stack
+    │
     └── Thread 3
+        ├── Registers
+        ├── Program Counter
+        └── Stack
 ```
 
 Study:
@@ -343,7 +346,7 @@ Thread A
 
 - [ ] Shared memory
 - [ ] Memory mapping
-- [ ] mmap()
+- [ ] `mmap()`
 - [ ] Shared memory synchronization
 - [ ] Shared memory vs message passing
 - [ ] Shared memory performance
@@ -386,6 +389,7 @@ Understand:
 
 ```text
 High Address
+
 +----------------+
 | Stack          |
 +----------------+
@@ -401,6 +405,7 @@ High Address
 +----------------+
 | Text / Code    |
 +----------------+
+
 Low Address
 ```
 
@@ -463,10 +468,10 @@ Study:
 
 # 26. Memory Allocation
 
-- [ ] malloc()
-- [ ] calloc()
-- [ ] realloc()
-- [ ] free()
+- [ ] `malloc()`
+- [ ] `calloc()`
+- [ ] `realloc()`
+- [ ] `free()`
 - [ ] Heap allocation
 - [ ] Stack allocation
 - [ ] Memory allocator
@@ -479,8 +484,8 @@ Study:
 
 # 27. mmap ⭐⭐⭐⭐⭐
 
-- [ ] mmap()
-- [ ] munmap()
+- [ ] `mmap()`
+- [ ] `munmap()`
 - [ ] File-backed memory mapping
 - [ ] Anonymous mapping
 - [ ] Shared mapping
@@ -494,7 +499,7 @@ Study:
 # 28. Copy-on-Write
 
 - [ ] Copy-on-write
-- [ ] fork() + COW
+- [ ] `fork()` + COW
 - [ ] Shared pages
 - [ ] Page fault during COW
 - [ ] COW performance
@@ -575,10 +580,10 @@ Goroutines
     P
     |
     v
-   M
+    M
     |
     v
- CPU
+   CPU
 ```
 
 ---
@@ -637,12 +642,12 @@ Understand conceptually:
 - [ ] stdout
 - [ ] stderr
 - [ ] File descriptor table
-- [ ] open()
-- [ ] read()
-- [ ] write()
-- [ ] close()
-- [ ] dup()
-- [ ] dup2()
+- [ ] `open()`
+- [ ] `read()`
+- [ ] `write()`
+- [ ] `close()`
+- [ ] `dup()`
+- [ ] `dup2()`
 - [ ] File descriptor inheritance
 - [ ] Socket as file descriptor
 - [ ] Pipe as file descriptor
@@ -670,17 +675,17 @@ This is extremely important for backend systems.
 
 # 38. Linux File System
 
-- [ ] /
-- [ ] /bin
-- [ ] /etc
-- [ ] /home
-- [ ] /tmp
-- [ ] /var
-- [ ] /dev
-- [ ] /proc
-- [ ] /sys
-- [ ] /usr
-- [ ] /opt
+- [ ] `/`
+- [ ] `/bin`
+- [ ] `/etc`
+- [ ] `/home`
+- [ ] `/tmp`
+- [ ] `/var`
+- [ ] `/dev`
+- [ ] `/proc`
+- [ ] `/sys`
+- [ ] `/usr`
+- [ ] `/opt`
 
 ---
 
@@ -737,13 +742,13 @@ Understand:
 Application
      |
      v
-write()
+  write()
      |
      v
-Page Cache
+ Page Cache
      |
      v
-Disk
+   Disk
 ```
 
 ---
@@ -813,8 +818,8 @@ Learn practically:
 - [ ] vmstat
 - [ ] top
 - [ ] htop
-- [ ] /proc/meminfo
-- [ ] /proc/[pid]/status
+- [ ] `/proc/meminfo`
+- [ ] `/proc/[pid]/status`
 - [ ] RSS
 - [ ] VSZ
 - [ ] Virtual memory
@@ -866,10 +871,10 @@ Many Connections
     epoll
       |
       v
-Ready FDs
+  Ready FDs
       |
       v
- Application
+  Application
 ```
 
 ---
@@ -907,16 +912,16 @@ Understand:
 Connections
      |
      v
-Event Loop
+ Event Loop
      |
      v
-Ready Event
+ Ready Event
      |
      v
-Handler
+ Handler
      |
      v
-Process
+ Process
 ```
 
 Learn:
@@ -946,7 +951,7 @@ Load Balancer
 +-------------+
       |
       v
- Database
+   Database
 ```
 
 Study:
@@ -1037,13 +1042,13 @@ Producer
 Memory Buffer
    |
    v
-Batch
+  Batch
    |
    v
 Page Cache
    |
    v
-Disk
+  Disk
 ```
 
 Study:
@@ -1316,13 +1321,13 @@ Study:
 - [ ] CPU usage
 - [ ] Memory usage
 - [ ] Process state
-- [ ] Linux /proc
+- [ ] Linux `/proc`
 
 ## Project 2 — Mini Shell
 
-- [ ] fork()
-- [ ] exec()
-- [ ] wait()
+- [ ] `fork()`
+- [ ] `exec()`
+- [ ] `wait()`
 - [ ] Pipes
 - [ ] Redirection
 - [ ] File descriptors
@@ -1391,6 +1396,8 @@ Study:
 7. [ ] Scheduling
 8. [ ] Context switching
 
+---
+
 ## Phase 2 — Concurrency
 
 9. [ ] Concurrency
@@ -1403,6 +1410,8 @@ Study:
 16. [ ] Deadlocks
 17. [ ] Starvation
 18. [ ] Livelock
+
+---
 
 ## Phase 3 — Memory
 
@@ -1418,6 +1427,8 @@ Study:
 28. [ ] Copy-on-write
 29. [ ] Page cache
 
+---
+
 ## Phase 4 — I/O
 
 30. [ ] File descriptors
@@ -1429,6 +1440,8 @@ Study:
 36. [ ] epoll
 37. [ ] Event loops
 38. [ ] Reactor pattern
+
+---
 
 ## Phase 5 — File Systems
 
@@ -1442,17 +1455,21 @@ Study:
 46. [ ] SSD
 47. [ ] Sequential vs random I/O
 
+---
+
 ## Phase 6 — Linux
 
 48. [ ] Linux processes
 49. [ ] Linux threads
-50. [ ] /proc
+50. [ ] `/proc`
 51. [ ] Signals
 52. [ ] File descriptors
 53. [ ] Networking tools
 54. [ ] strace
 55. [ ] perf
 56. [ ] pprof
+
+---
 
 ## Phase 7 — Go Runtime
 
@@ -1465,6 +1482,8 @@ Study:
 63. [ ] Blocking system calls
 64. [ ] Runtime scheduling
 
+---
+
 ## Phase 8 — Systems Engineering
 
 65. [ ] Worker pools
@@ -1476,6 +1495,8 @@ Study:
 71. [ ] Resource limits
 72. [ ] Observability
 
+---
+
 ## Phase 9 — Your Projects
 
 73. [ ] URL Shortener
@@ -1483,9 +1504,10 @@ Study:
 75. [ ] Event Streaming Engine
 76. [ ] Reverse Proxy
 77. [ ] Real-world Go backend
-```
 
-## 🎯 Depth priority for your projects
+---
+
+# 🎯 Depth Priority for Your Projects
 
 You **do not need equal depth everywhere**.
 
@@ -1507,7 +1529,9 @@ You **do not need equal depth everywhere**.
 | Linux | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
 | Graceful Shutdown | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
 
-### The most important connection for your Event Streaming Engine
+---
+
+# 🔥 The Most Important Connection for Your Event Streaming Engine
 
 You should eventually be able to understand this entire path:
 
