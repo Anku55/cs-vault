@@ -1,5 +1,3 @@
-
-```markdown
 # Go Concurrency
 
 A complete roadmap for mastering concurrency in Go, from goroutines and channels to synchronization, worker pools, cancellation, concurrent data structures, and production-grade concurrency patterns.
@@ -52,12 +50,25 @@ A complete roadmap for mastering concurrency in Go, from goroutines and channels
 - [ ] Limiting goroutine creation
 - [ ] Goroutine ownership
 
-Example:
+### Example
 
 ```go
-go worker()
-```
+package main
 
+import (
+	"fmt"
+	"time"
+)
+
+func worker() {
+	fmt.Println("Worker is running")
+}
+
+func main() {
+	go worker()
+
+	time.Sleep(time.Second)
+}
 ---
 
 # 3. Go Scheduler
