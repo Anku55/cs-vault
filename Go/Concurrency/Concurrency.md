@@ -26,6 +26,7 @@ A complete roadmap for mastering concurrency in Go, from goroutines and channels
 
 ---
 
+
 # 2. Goroutines
 
 - [ ] What is a goroutine?
