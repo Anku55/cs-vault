@@ -281,3 +281,65 @@ The database automatically sets:
 ```text
 status = 'active'
 ```
+## PRIMARY KEY
+
+**Definition:**  
+A `PRIMARY KEY` is a column (or combination of columns) that **uniquely identifies each row** in a table. It cannot contain `NULL` values or duplicate values.
+
+**Example:**
+```sql
+CREATE TABLE students (
+    id INT PRIMARY KEY,
+    name VARCHAR(50),
+    age INT
+);
+```
+
+```sql
+INSERT INTO students (id, name, age)
+VALUES (1, 'Ankush', 20);
+```
+
+Each student must have a unique `id`.
+
+---
+
+## AUTO_INCREMENT
+
+**Definition:**  
+`AUTO_INCREMENT` automatically generates a **new numeric value** for a column whenever a new row is inserted.
+
+**Example:**
+```sql
+CREATE TABLE students (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(50),
+    age INT
+);
+```
+
+Now you don't need to provide the `id`:
+
+```sql
+INSERT INTO students (name, age)
+VALUES ('Ankush', 20);
+
+INSERT INTO students (name, age)
+VALUES ('Rahul', 21);
+```
+
+The database automatically generates:
+
+```text
+id | name
+---|-------
+1  | Ankush
+2  | Rahul
+```
+
+**Common usage:**
+```sql
+id INT PRIMARY KEY AUTO_INCREMENT
+```
+
+This makes `id` **unique** and automatically generates its value.
