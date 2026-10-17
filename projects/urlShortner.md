@@ -1,6 +1,4 @@
-# URL Shortener — Mock Interview Preparation
-
-> **Current status:** Milestones 1–3 completed. This document describes the implemented scope and likely interview questions. Do not claim planned features are already implemented.
+# URL Shortener 
 
 ## Table of Contents
 
