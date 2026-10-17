@@ -1,5 +1,3 @@
-
-```markdown
 # SQL + Go Backend Implementation Roadmap
 
 ## 1. SQL Fundamentals
@@ -28,7 +26,7 @@
 
 ---
 
-# 2. SQL Data Types
+## 2. SQL Data Types
 
 - [ ] INTEGER
 - [ ] BIGINT
@@ -53,7 +51,7 @@
 
 ---
 
-# 3. Constraints
+## 3. Constraints
 
 - [ ] PRIMARY KEY
 - [ ] FOREIGN KEY
@@ -71,7 +69,7 @@
 
 ---
 
-# 4. SQL Filtering
+## 4. SQL Filtering
 
 - [ ] Comparison operators
 - [ ] AND
@@ -89,9 +87,9 @@
 
 ---
 
-# 5. SQL Functions
+## 5. SQL Functions
 
-## Aggregate Functions
+### Aggregate Functions
 
 - [ ] COUNT
 - [ ] SUM
@@ -99,7 +97,7 @@
 - [ ] MIN
 - [ ] MAX
 
-## String Functions
+### String Functions
 
 - [ ] LOWER
 - [ ] UPPER
@@ -109,7 +107,7 @@
 - [ ] TRIM
 - [ ] REPLACE
 
-## Numeric Functions
+### Numeric Functions
 
 - [ ] ROUND
 - [ ] CEIL
@@ -117,7 +115,7 @@
 - [ ] ABS
 - [ ] MOD
 
-## Date Functions
+### Date Functions
 
 - [ ] CURRENT_DATE
 - [ ] CURRENT_TIMESTAMP
@@ -129,7 +127,7 @@
 
 ---
 
-# 6. SQL Joins
+## 6. SQL Joins
 
 - [ ] INNER JOIN
 - [ ] LEFT JOIN
@@ -145,7 +143,7 @@
 
 ---
 
-# 7. Aggregation
+## 7. Aggregation
 
 - [ ] GROUP BY
 - [ ] HAVING
@@ -158,7 +156,7 @@
 
 ---
 
-# 8. Subqueries
+## 8. Subqueries
 
 - [ ] Scalar subqueries
 - [ ] Single-row subqueries
@@ -171,7 +169,7 @@
 
 ---
 
-# 9. CTEs
+## 9. CTEs
 
 - [ ] WITH
 - [ ] Basic CTE
@@ -183,7 +181,7 @@
 
 ---
 
-# 10. Window Functions
+## 10. Window Functions
 
 - [ ] OVER()
 - [ ] PARTITION BY
@@ -201,7 +199,7 @@
 
 ---
 
-# 11. INSERT Operations
+## 11. INSERT Operations
 
 - [ ] Basic INSERT
 - [ ] Multiple-row INSERT
@@ -214,7 +212,7 @@
 
 ---
 
-# 12. UPDATE Operations
+## 12. UPDATE Operations
 
 - [ ] Basic UPDATE
 - [ ] UPDATE with WHERE
@@ -227,7 +225,7 @@
 
 ---
 
-# 13. DELETE Operations
+## 13. DELETE Operations
 
 - [ ] Basic DELETE
 - [ ] DELETE with WHERE
@@ -240,7 +238,7 @@
 
 ---
 
-# 14. UPSERT
+## 14. UPSERT
 
 - [ ] INSERT ... ON CONFLICT
 - [ ] DO NOTHING
@@ -251,7 +249,7 @@
 
 ---
 
-# 15. PostgreSQL Practical SQL
+## 15. PostgreSQL Practical SQL
 
 - [ ] psql
 - [ ] CREATE DATABASE
@@ -273,7 +271,7 @@
 
 ---
 
-# 16. Database Schema Design
+## 16. Database Schema Design
 
 Practice designing schemas for:
 
@@ -295,7 +293,7 @@ Practice designing schemas for:
 
 ---
 
-# 17. Indexing
+## 17. Indexing
 
 - [ ] Why indexes?
 - [ ] CREATE INDEX
@@ -315,7 +313,7 @@ Practice designing schemas for:
 
 ---
 
-# 18. Query Performance
+## 18. Query Performance
 
 - [ ] EXPLAIN
 - [ ] EXPLAIN ANALYZE
@@ -335,7 +333,7 @@ Practice designing schemas for:
 
 ---
 
-# 19. Transactions
+## 19. Transactions
 
 - [ ] BEGIN
 - [ ] COMMIT
@@ -350,7 +348,7 @@ Practice designing schemas for:
 
 ---
 
-# 20. Concurrency
+## 20. Concurrency
 
 - [ ] Concurrent transactions
 - [ ] Lost updates
@@ -367,7 +365,7 @@ Practice designing schemas for:
 
 ---
 
-# 21. Isolation Levels
+## 21. Isolation Levels
 
 - [ ] Read Uncommitted
 - [ ] Read Committed
@@ -379,7 +377,7 @@ Practice designing schemas for:
 
 ---
 
-# 22. Pagination
+## 22. Pagination
 
 - [ ] LIMIT/OFFSET
 - [ ] Offset pagination
@@ -392,7 +390,7 @@ Practice designing schemas for:
 
 ---
 
-# 23. SQL Security
+## 23. SQL Security
 
 - [ ] SQL Injection
 - [ ] Parameterized queries
@@ -407,9 +405,9 @@ Practice designing schemas for:
 
 ---
 
-# 24. Go database/sql
+## 24. Go database/sql
 
-## Core Types
+### Core Types
 
 - [ ] database/sql
 - [ ] sql.DB
@@ -420,7 +418,7 @@ Practice designing schemas for:
 - [ ] sql.Row
 - [ ] sql.Result
 
-## Core Methods
+### Core Methods
 
 - [ ] sql.Open()
 - [ ] DB.Ping()
@@ -441,7 +439,7 @@ Practice designing schemas for:
 
 ---
 
-# 25. Go + PostgreSQL
+## 25. Go + PostgreSQL
 
 - [ ] PostgreSQL driver
 - [ ] pgx
@@ -459,7 +457,7 @@ Practice designing schemas for:
 
 ---
 
-# 26. Go Struct ↔ SQL Mapping
+## 26. Go Struct ↔ SQL Mapping
 
 Learn how database rows become Go structs.
 
@@ -476,7 +474,7 @@ Learn how database rows become Go structs.
 - [ ] JSON mapping
 - [ ] Time mapping
 
-Example:
+### Example
 
 ```go
 type User struct {
