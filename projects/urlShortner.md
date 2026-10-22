@@ -1,29 +1,32 @@
-# URL Shortener 
+# URL Shortener
 
-## Table of Contents
+A backend URL Shortener built with **Go**. The project converts long URLs into short links and redirects users from the short code back to the original URL.
 
-1. [Project Overview](#1-project-overview)
-2. [60–90 Second Project Introduction](#2-60–90-second-project-introduction)
-3. [Architecture](#3-architecture)
-4. [Implemented Milestones](#4-implemented-milestones)
-5. [Important Interview Questions and Answers](#5-important-interview-questions-and-answers)
-6. [Practical Code Walkthrough](#6-practical-code-walkthrough)
-7. [Handling Questions You Cannot Answer](#7-handling-questions-you-cannot-answer)
-8. [Pre-Interview Checklist](#8-pre-interview-checklist)
+I built this project to practise backend development concepts such as HTTP APIs, layered architecture, interfaces, dependency injection, URL validation, random short-code generation, in-memory storage, error handling, and testing.
+
+> **Project status:** Functional learning/prototype project. Storage is currently in memory, so mappings are lost when the server restarts.
 
 ---
 
-## 1. Project Overview
+## Overview
 
-A URL Shortener converts a long URL into a short link. When someone opens that short link, the server finds the original URL and redirects the user to it.
-
-### Implemented features
+The URL Shortener currently provides two main API operations:
 
 - `POST /shorten` — accepts a URL and returns a short link.
-- `GET /{shortCode}` — looks up the original URL and redirects to it.
-- URL validation — accepts only `http` and `https` URLs with a non-empty host.
-- In-memory storage — stores short-code-to-URL mappings in a Go map.
-- Tests — covers handler, service, and storage behavior.
+- `GET /{shortCode}` — looks up the original URL and redirects the client.
+
+It also validates URLs before storing them and includes tests for the handler, service, and storage layers. fileciteturn0file0L35-L51
+
+### Current features
+
+- URL shortening
+- HTTP redirects
+- URL validation
+- Random short-code generation
+- In-memory URL storage
+- Handler, service, and storage tests
+- Layered architecture
+- Error handling
 
 ### Not implemented yet
 
@@ -32,50 +35,98 @@ A URL Shortener converts a long URL into a short link. When someone opens that s
 - Authentication
 - Rate limiting
 - Analytics
-- Production-scale distributed deployment
-
-Be clear about the difference between implemented features and future improvements.
+- Production-scale distributed deployment fileciteturn0file0L55-L69
 
 ---
 
-## 2. 60–90 Second Project Introduction
+## Tech Stack
 
-Use this as a guide; understand the meaning rather than memorizing it word-for-word.
+- **Language:** Go
+- **HTTP:** `net/http`
+- **URL parsing:** `net/url`
+- **Random code generation:** `crypto/rand`
+- **Testing:** Go testing package / `httptest`
+- **Storage:** Go map
+- **API format:** JSON
 
-> I have been building a URL Shortener using Go. The main purpose is to convert long URLs into shorter links that redirect users to the original URLs.
->
-> So far, I have implemented three main features. First, a `POST /shorten` endpoint that accepts a URL, validates it, generates a random short code, and stores the mapping in memory. Second, a `GET /{shortCode}` endpoint that retrieves the original URL and redirects the user to it. Third, URL validation to reject invalid URLs before storing them.
->
-> I use Go's `net/http` package to handle HTTP requests, `net/url` for URL parsing and validation, and `crypto/rand` for generating random short codes.
->
-> The project follows a layered architecture with Handler, Service, and Storage layers. This separation makes the code easier to test and maintain.
->
-> Currently, the project uses in-memory storage, so mappings are lost when the server restarts. My next goal is to add persistent storage and improve the system further.
+The project uses Go's standard library rather than relying on external frameworks. The implementation uses `net/http` for HTTP handling, `net/url` for URL parsing, and `crypto/rand` for random short-code generation. fileciteturn0file0L89-L105
 
 ---
 
-## 3. Architecture
+## Architecture
+
+The project follows a simple layered architecture:
 
 ```text
-Client (Browser / Postman)
-          |
-          v
-    Handler Layer
-  HTTP, JSON, status codes
-          |
-          v
-     Service Layer
- Validation, business logic,
-     short-code generation
-          |
-          v
-     Storage Layer
- Map: short code -> original URL
+              Client
+        Browser / Postman
+               |
+               v
+        ┌───────────────┐
+        │    Handler    │
+        │ HTTP / JSON   │
+        │ Status Codes  │
+        └───────┬───────┘
+                |
+                v
+        ┌───────────────┐
+        │    Service    │
+        │ Validation    │
+        │ Business Logic│
+        │ Code Creation │
+        └───────┬───────┘
+                |
+                v
+        ┌───────────────┐
+        │    Storage    │
+        │ shortCode →   │
+        │ original URL  │
+        └───────────────┘
 ```
 
-The response travels back to the client. For a redirect request, the Handler, Service, and Storage work together to retrieve the original URL, then the server sends an HTTP redirect response.
+The Handler is responsible for HTTP-specific concerns, the Service contains business logic, and Storage handles saving and retrieving URL mappings. fileciteturn0file0L113-L151
 
-### Project files
+### Why I chose this architecture
+
+I wanted to keep HTTP handling separate from business logic and storage.
+
+This gives me:
+
+- Lower coupling
+- Easier testing
+- Clear responsibilities
+- The ability to replace the storage implementation later
+
+For example, the current in-memory storage can eventually be replaced with PostgreSQL without changing the overall API flow.
+
+---
+
+## Project Structure
+
+```text
+URL-Shortener/
+│
+├── cmd/
+│   └── server/
+│       └── main.go
+│
+├── internal/
+│   ├── handler/
+│   │   ├── url.go
+│   │   └── url_test.go
+│   │
+│   ├── service/
+│   │   ├── url.go
+│   │   └── url_test.go
+│   │
+│   └── storage/
+│       ├── memory.go
+│       └── memory_test.go
+│
+└── ...
+```
+
+### Responsibilities
 
 | File | Responsibility |
 |---|---|
@@ -87,23 +138,17 @@ The response travels back to the client. For a redirect request, the Handler, Se
 | `internal/service/url_test.go` | Tests service logic |
 | `internal/storage/memory_test.go` | Tests storage behavior |
 
-### Responsibilities of each layer
-
-- **Handler:** Parses the request, reads JSON, calls the Service, and writes an HTTP response.
-- **Service:** Implements business rules such as validation and short-code generation.
-- **Storage:** Saves and retrieves the mapping between a short code and its original URL.
-
-### Why this architecture?
-
-It separates HTTP-specific logic from business logic and storage. That lowers coupling, improves testability, and makes it easier to replace the storage implementation later.
+These responsibilities follow the current project structure described in the project notes. fileciteturn0file0L155-L175
 
 ---
 
-## 4. Implemented Milestones
+# API
 
-### Milestone 1 — URL Shortening
+## `POST /shorten`
 
-Example request:
+Creates a short URL from an original URL.
+
+### Request
 
 ```http
 POST /shorten
@@ -116,15 +161,580 @@ Content-Type: application/json
 }
 ```
 
-Flow:
+### Flow
 
-1. The Handler reads the JSON request.
-2. The Service validates the URL.
-3. A random short code is generated.
-4. Storage saves the short-code-to-original-URL mapping.
-5. The client receives a short URL.
+```text
+Client
+  |
+  v
+Handler reads JSON
+  |
+  v
+Service validates URL
+  |
+  v
+Short code generated
+  |
+  v
+Storage saves mapping
+  |
+  v
+Short URL returned
+```
 
-Example response (illustrative; check the actual response format in your code):
+The expected creation response is commonly `201 Created`; the exact status should always be verified against the current Handler implementation. fileciteturn0file0L203-L269
+
+---
+
+## `GET /{shortCode}`
+
+Redirects the client to the original URL.
+
+For example:
+
+```text
+GET /tVnxW6
+```
+
+If the short code exists:
+
+```text
+302 Found
+Location: https://example.com/articles/long-page
+```
+
+If the short code doesn't exist:
+
+```text
+404 Not Found
+```
+
+An unsupported HTTP method should result in:
+
+```text
+405 Method Not Allowed
+```
+
+The current successful redirect test checks for `302 Found` and the `Location` header. fileciteturn0file0L273-L289
+
+---
+
+# URL Validation
+
+Before storing a URL, the Service performs basic structural validation.
+
+The current rules are:
+
+1. The URL must parse successfully.
+2. The scheme must be `http` or `https`.
+3. The host must not be empty.
+
+### Examples
+
+| Input | Result |
+|---|---|
+| `https://google.com` | Valid |
+| `http://example.com/page` | Valid |
+| `example.com` | Invalid — missing scheme |
+| `ftp://example.com` | Invalid — unsupported scheme |
+| `https:///page` | Invalid — missing host |
+| `random text` | Invalid |
+
+When validation fails, the Service returns an error and the Handler translates it into a `400 Bad Request`. fileciteturn0file0L293-L331
+
+### Important limitation
+
+This is only **structural URL validation**.
+
+It does not prove that:
+
+- The domain exists
+- The server is reachable
+- The page exists
+- The destination is safe
+
+I intentionally keep this separate from network-level validation because checking the destination would introduce additional latency, failure cases, and security considerations.
+
+---
+
+# Short-Code Generation
+
+The project uses:
+
+```go
+crypto/rand
+```
+
+to generate random short codes.
+
+I chose `crypto/rand` because it provides cryptographically secure randomness and makes generated codes harder to predict compared with ordinary pseudorandom generation.
+
+However, randomness alone does **not** guarantee uniqueness.
+
+A robust production implementation should:
+
+1. Generate a code.
+2. Check whether it already exists.
+3. Retry if a collision occurs.
+
+The current implementation should be described accurately rather than claiming collision retry unless it has actually been implemented. fileciteturn0file0L439-L445
+
+### Possible code space
+
+If the alphabet contains:
+
+```text
+a-z
+A-Z
+0-9
+```
+
+there are 62 possible characters.
+
+For six-character codes:
+
+```text
+62^6 = 56,800,235,584
+```
+
+This is a large space, but collisions are still theoretically possible.
+
+---
+
+# Storage
+
+The current project uses an in-memory Go map:
+
+```text
+short code → original URL
+```
+
+Conceptually:
+
+```text
+tVnxW6 → https://example.com/articles/long-page
+a8KpQ2 → https://example.com/products/item
+```
+
+### Why in-memory storage?
+
+I wanted to first focus on:
+
+- API design
+- Layered architecture
+- Interfaces
+- Validation
+- HTTP handling
+- Testing
+
+without introducing database configuration and persistence complexity.
+
+The downside is important:
+
+> **All mappings are lost when the server restarts.**
+
+A persistent database would be required for a real production system. fileciteturn0file0L669-L685
+
+---
+
+# Go Concepts Used
+
+## Interfaces
+
+An interface defines a set of method signatures.
+
+The Service depends on a Storage abstraction rather than a specific storage implementation.
+
+This means I can have:
+
+```text
+Service
+   |
+   v
+Storage interface
+   |
+   ├── In-memory implementation
+   |
+   └── Future PostgreSQL implementation
+```
+
+A type satisfies a Go interface by implementing its required methods; it doesn't need an explicit declaration. fileciteturn0file0L395-L407
+
+---
+
+## Dependency Injection
+
+Instead of making each component create its dependencies internally, dependencies are provided to it.
+
+Conceptually:
+
+```text
+Storage → Service → Handler
+```
+
+This makes dependencies explicit and makes testing easier because I can provide alternative implementations.
+
+For example, a test can inject a controlled storage implementation instead of relying on the real application storage.
+
+---
+
+## `cmd` and `internal`
+
+The project follows a common Go layout:
+
+```text
+cmd/server/
+```
+
+contains the application entry point.
+
+```text
+internal/
+```
+
+contains implementation packages that should not be imported by unrelated external projects.
+
+This helps keep application internals separated from any public API surface. fileciteturn0file0L415-L421
+
+---
+
+# HTTP Concepts
+
+## Why `POST /shorten`?
+
+The endpoint accepts input and creates a new URL mapping.
+
+`POST` is appropriate because the operation creates server-side state.
+
+---
+
+## Why `GET /{shortCode}`?
+
+Opening a short URL retrieves the destination and navigates to it.
+
+The client is requesting a resource/action rather than creating a new mapping, so `GET` is appropriate.
+
+---
+
+## HTTP Status Codes
+
+| Status | Meaning | Example |
+|---|---|---|
+| `201` | Created | Short URL created |
+| `302` | Found | Redirect to original URL |
+| `400` | Bad Request | Invalid URL |
+| `404` | Not Found | Unknown short code |
+| `405` | Method Not Allowed | Unsupported HTTP method |
+| `500` | Internal Server Error | Unexpected server-side failure |
+
+The exact status behavior should always be verified against the current Handler implementation before claiming that every status is implemented. fileciteturn0file0L463-L505
+
+---
+
+## `Location` Header
+
+For redirects, the response contains a `Location` header.
+
+For example:
+
+```http
+HTTP/1.1 302 Found
+Location: https://example.com/articles/long-page
+```
+
+The client can use this header to determine where it should navigate. fileciteturn0file0L509-L513
+
+---
+
+# Testing
+
+Testing is an important part of the project.
+
+The repository contains tests for:
+
+- Handler behavior
+- Service logic
+- Storage behavior
+
+The project uses Go's HTTP testing tools so handlers can be tested without starting a real server.
+
+For example:
+
+```go
+httptest.NewRequest()
+httptest.NewRecorder()
+```
+
+allow tests to create HTTP requests and inspect the resulting status codes, headers, and response bodies. fileciteturn0file0L601-L625
+
+## Run tests
+
+```bash
+go test ./...
+```
+
+## Run tests with coverage
+
+```bash
+go test -cover ./...
+```
+
+---
+
+## Test Cases
+
+The current test coverage described for the project includes:
+
+- Successful redirects
+- Missing short codes → `404`
+- Unsupported methods → `405`
+- Valid HTTP URLs
+- Valid HTTPS URLs
+- Missing schemes
+- Unsupported schemes
+- Missing hosts
+
+Additional useful tests would include:
+
+- Invalid JSON
+- Missing `url` field
+- Empty URL
+- Duplicate short-code collisions
+- Concurrent access
+- Large request bodies
+
+The exact test suite should be verified against the current test files before claiming a particular case is implemented. fileciteturn0file0L605-L665
+
+---
+
+# Concurrency
+
+A regular Go map is **not safe for concurrent reads and writes without synchronization**.
+
+This matters because an HTTP server can process multiple requests concurrently.
+
+If the current storage implementation does not protect the map, I would improve it using synchronization such as a mutex and add concurrent tests.
+
+The Go race detector would also be useful for finding data races.
+
+This is an important production consideration even though the current project is primarily a learning/prototype implementation. fileciteturn0file0L697-L709
+
+---
+
+# Scaling the Project
+
+If I wanted to take this from a learning project toward a production system, I would improve it in stages.
+
+### 1. Persistent storage
+
+Move mappings from an in-memory map to something such as PostgreSQL.
+
+```text
+Handler
+   ↓
+Service
+   ↓
+Storage interface
+   ↓
+PostgreSQL
+```
+
+This would preserve mappings across restarts.
+
+### 2. Collision handling
+
+Make short-code creation explicitly check for existing codes and retry on collisions.
+
+### 3. Concurrency safety
+
+Ensure storage operations are safe when multiple HTTP requests access the system simultaneously.
+
+### 4. Rate limiting
+
+Limit how many requests a client can make within a period of time.
+
+### 5. Monitoring
+
+Add:
+
+- Structured logging
+- Metrics
+- Health checks
+- Error monitoring
+
+### 6. Caching
+
+Redis could be introduced for frequently accessed mappings.
+
+A sensible architecture would use PostgreSQL as the durable source of truth and Redis as an optional cache. fileciteturn0file0L711-L725
+
+---
+
+# Security Considerations
+
+A URL Shortener has several security and abuse concerns.
+
+## Malicious destinations
+
+Short links can hide phishing or malicious URLs.
+
+A production system could require:
+
+- Abuse reporting
+- Destination screening
+- Monitoring
+- Rate limiting
+
+## Predictable codes
+
+Short codes should not be treated as authentication credentials.
+
+Random codes can make guessing harder, but they do not provide authentication or authorization.
+
+## SSRF
+
+Basic URL validation does **not** prevent SSRF.
+
+This project currently doesn't fetch user-supplied URLs from the server, so SSRF is not established as a vulnerability in the current shortening flow.
+
+If the system were extended to fetch or inspect destinations server-side, it would need stronger controls around:
+
+- Private IP ranges
+- Redirects
+- DNS resolution
+- Network access
+- Destination validation
+
+fileciteturn0file0L729-L765
+
+---
+
+# Limitations
+
+The current implementation is intentionally small.
+
+The biggest limitations are:
+
+### 1. In-memory storage
+
+Mappings disappear after a restart.
+
+### 2. No explicit persistence
+
+There is currently no database.
+
+### 3. Collision handling needs attention
+
+Random generation does not itself guarantee uniqueness.
+
+### 4. Concurrency safety needs to be verified
+
+A normal Go map requires synchronization when concurrent writes are possible.
+
+### 5. No rate limiting
+
+The API can be abused without request throttling.
+
+### 6. No analytics
+
+The current application doesn't track click counts, referrers, geographic data, or other usage metrics.
+
+### 7. No authentication
+
+Short URLs are not protected by user accounts or authorization.
+
+These limitations are intentional and help define the current scope of the project. fileciteturn0file0L55-L69
+
+---
+
+# What I Learned
+
+This project helped me understand backend development beyond simply writing an HTTP endpoint.
+
+The main concepts I practised were:
+
+- HTTP APIs
+- Request and response handling
+- JSON
+- HTTP status codes
+- Redirects
+- URL parsing
+- Input validation
+- Go interfaces
+- Dependency injection
+- Layered architecture
+- In-memory storage
+- Error propagation
+- Unit testing
+- HTTP testing
+- Concurrency considerations
+- Basic backend security
+- System design trade-offs
+
+The biggest architectural lesson for me was the value of separating the **Handler**, **Service**, and **Storage** layers.
+
+It makes the current implementation easier to understand and gives me a clear path for replacing the in-memory map with persistent storage later.
+
+---
+
+# Running the Project
+
+## Prerequisites
+
+Install Go and verify:
+
+```bash
+go version
+```
+
+## Run
+
+From the project root:
+
+```bash
+go run ./cmd/server
+```
+
+The server should then be available on the configured local address.
+
+## Test
+
+```bash
+go test ./...
+```
+
+## Test with coverage
+
+```bash
+go test -cover ./...
+```
+
+---
+
+# Example Workflow
+
+### 1. Start the server
+
+```bash
+go run ./cmd/server
+```
+
+### 2. Create a short URL
+
+```http
+POST /shorten
+Content-Type: application/json
+```
+
+```json
+{
+  "url": "https://example.com/articles/long-page"
+}
+```
+
+### 3. Receive the short URL
+
+Example:
 
 ```json
 {
@@ -132,330 +742,114 @@ Example response (illustrative; check the actual response format in your code):
 }
 ```
 
-The expected success status for a creation endpoint is `201 Created`; verify what your Handler actually returns.
+### 4. Open the short URL
 
-### Milestone 2 — URL Redirect
-
-When a user opens a URL such as `http://localhost:8080/tVnxW6`:
-
-- If the short code exists, the server retrieves the original URL and redirects the client.
-- If the short code does not exist, the server returns `404 Not Found`.
-- If the request uses an unsupported HTTP method, the server returns `405 Method Not Allowed`.
-- The redirect response uses a `Location` header to identify the destination.
-- The current successful redirect test checks `302 Found` and the `Location` header.
-
-### Milestone 3 — URL Validation
-
-The current validation rules are:
-
-- The URL must parse successfully.
-- The scheme must be `http` or `https`.
-- The host must not be empty.
-
-| Input | Expected result |
-|---|---|
-| `https://google.com` | Valid |
-| `http://example.com/page` | Valid |
-| `example.com` | Invalid: missing scheme |
-| `ftp://example.com` | Invalid: unsupported scheme |
-| `https:///page` | Invalid: missing host |
-| `random text` | Invalid |
-
-When validation fails, the Service returns an error and the Handler returns `400 Bad Request`.
-
-This is basic structural validation. It does **not** prove that a destination exists, is reachable, or is safe.
-
----
-
-## 5. Important Interview Questions and Answers
-
-### A. Project overview and design
-
-**1. Why did you build a URL Shortener?**
-
-A URL Shortener is a practical backend project that helped me learn HTTP APIs, request handling, validation, random code generation, storage abstraction, error handling, and testing. It also gives me a foundation for understanding backend system design.
-
-**2. What features have you implemented?**
-
-I have implemented URL shortening through `POST /shorten`, redirection through `GET /{shortCode}`, and URL validation. I have also written tests for service, storage, and handler behavior.
-
-**3. Explain the architecture.**
-
-The Handler handles HTTP requests and responses. The Service contains business logic, including URL validation and short-code generation. The Storage layer saves and retrieves URL mappings. The Handler calls the Service, and the Service uses the Storage abstraction.
-
-**4. Why did you use Go?**
-
-Go provides a straightforward language design, built-in concurrency support, a standard HTTP library, interfaces, and a built-in testing framework. These features make it suitable for backend and networking applications.
-
-**5. What was an important technical decision?**
-
-Separating Handler, Service, and Storage. It isolates HTTP-specific code from business logic and data storage, making components easier to test and replace.
-
-**6. What are the current limitations?**
-
-Mappings are stored in memory and disappear when the process restarts. The current project also does not yet include persistent storage, rate limiting, analytics, authentication, or distributed deployment.
-
-### B. Go concepts
-
-**7. What is an interface in Go?**
-
-An interface defines a set of method signatures. A type satisfies an interface by implementing its methods; it does not need an explicit declaration. A Storage interface allows the Service to depend on the storage contract rather than a particular implementation.
-
-**8. What is dependency injection?**
-
-Dependency injection means providing a component with its dependencies instead of making it create them internally. Passing Storage to Service and Service to Handler makes dependencies explicit and allows alternative implementations in tests.
-
-**9. Why use `cmd` and `internal`?**
-
-`cmd/server` contains the application entry point. Go's `internal` directory restricts which packages may import those implementation packages, helping separate internal implementation from public APIs.
-
-**10. What is `net/http`?**
-
-It is Go's standard package for HTTP clients and servers. This project uses it to handle requests, write responses, and send redirects.
-
-**11. What is `net/url`?**
-
-It provides URL parsing and URL-related utilities. The project uses it to inspect the URL scheme and host during validation.
-
-**12. Why use `crypto/rand` instead of `math/rand`?**
-
-`crypto/rand` produces cryptographically secure random values and is useful when codes should be difficult to predict. `math/rand` is for ordinary pseudorandom use cases and is not designed for security-sensitive randomness. Neither one alone guarantees uniqueness.
-
-**13. Map versus slice?**
-
-A map stores key-value pairs and supports lookup by key. A slice is a dynamically sized view over an underlying array. A map is a natural fit for looking up an original URL by short code.
-
-**14. Why use errors instead of exceptions?**
-
-Go commonly represents recoverable failures with explicit `error` return values. The caller checks and handles the error. In this project, validation errors propagate to the Handler, which translates them into HTTP responses.
-
-### C. HTTP and API questions
-
-**15. Why is `/shorten` a POST endpoint?**
-
-It accepts input and creates a URL mapping. POST is appropriate for this operation, with the original URL commonly sent in a JSON request body.
-
-**16. Why is the redirect endpoint GET?**
-
-Opening a short URL retrieves the destination and performs navigation. GET is appropriate because the client is requesting the destination rather than creating a mapping.
-
-**17. Explain these status codes.**
-
-| Code | Meaning | Typical use |
-|---|---|---|
-| `201` | Created | URL mapping created |
-| `302` | Found | Temporary redirect |
-| `400` | Bad Request | Invalid URL or request |
-| `404` | Not Found | Short code does not exist |
-| `405` | Method Not Allowed | Unsupported method |
-| `500` | Internal Server Error | Unexpected server-side failure |
-
-Check the actual Handler before claiming every status is implemented.
-
-**18. What is the `Location` header?**
-
-It identifies the destination in a redirect response. A browser receiving a redirect status and the `Location` header can request the destination.
-
-**19. Difference between `301`, `302`, `307`, and `308`?**
-
-`301` and `308` are permanent redirects; `302` and `307` are temporary redirects. `307` and `308` preserve the HTTP method. `301` and `302` may have method-changing behavior in common clients.
-
-**20. Why return JSON?**
-
-JSON is a widely supported way to exchange structured data between clients and backend services. It lets the API return the short URL in a predictable response format.
-
-**21. What if the client sends GET to `/shorten`?**
-
-The endpoint should return `405 Method Not Allowed` for an unsupported method. An `Allow` header listing supported methods is also useful if implemented.
-
-### D. Validation and short-code generation
-
-**22. How do you validate a URL?**
-
-I parse it with `net/url`, check that parsing succeeds, ensure the scheme is `http` or `https`, and verify that the host is non-empty. Invalid input produces a Service error, which the Handler maps to `400 Bad Request`.
-
-**23. Is `https://example.com` valid? What about `example.com`?**
-
-The first passes the current validation rules. The second is rejected because it lacks an explicit HTTP or HTTPS scheme.
-
-**24. How do you generate a short code?**
-
-The implementation uses `crypto/rand` and an alphanumeric character set to generate a random code. Verify the actual code length and character set in the implementation before stating exact values.
-
-**25. Can two URLs get the same short code?**
-
-Yes. Random generation does not guarantee uniqueness. A robust implementation should check whether the code already exists and generate another one if a collision occurs. Do not claim collision retry is implemented unless you have verified it in the code.
-
-**26. How many six-character codes are possible?**
-
-If the alphabet contains 62 characters (`a-z`, `A-Z`, `0-9`), the number of six-character codes is:
-
-`62^6 = 56,800,235,584`
-
-This assumes six positions and a 62-character alphabet.
-
-**27. Does validation guarantee the website exists?**
-
-No. Structural validation does not prove the domain resolves, the server is reachable, or the page exists. Network checks would introduce additional latency, timeouts, and security considerations.
-
-### E. Testing
-
-**28. What is unit testing?**
-
-Unit testing checks a component independently. The project has tests for service logic, storage operations, and handler behavior.
-
-**29. What is `net/http/httptest`?**
-
-It provides tools to test HTTP handlers without starting a real server. Tests can construct requests and inspect recorded response status codes, headers, and bodies.
-
-**30. Which cases have you tested?**
-
-The described test suite covers successful redirects, missing short codes (`404`), wrong methods (`405`), and URL validation cases such as missing schemes, unsupported schemes, and missing hosts. Confirm the exact cases in the test files.
-
-**31. How do you run tests?**
-
-```bash
-go test ./...
+```text
+http://localhost:8080/tVnxW6
 ```
 
-For package-level coverage:
-
-```bash
-go test -cover ./...
-```
-
-**32. Unit testing versus integration testing?**
-
-Unit tests check components in isolation. Integration tests check whether multiple components work together. Testing the complete HTTP flow through Handler, Service, and Storage is closer to an integration test.
-
-**33. How would you test invalid JSON?**
-
-Send malformed JSON to `POST /shorten` and verify a `400 Bad Request` response. Also test missing and empty URL fields, unsupported content types if enforced, and oversized request bodies.
-
-### F. Storage and system design
-
-**34. Why use in-memory storage?**
-
-It lets me focus first on API design, architecture, and core functionality without introducing database complexity. It is useful for learning and prototyping but not sufficient for durable production storage.
-
-**35. What happens after a server restart?**
-
-Mappings held in memory are lost. Persistent storage such as PostgreSQL would preserve mappings across restarts.
-
-**36. Why not use a database from the start?**
-
-I wanted to implement the core flow and layer separation first. Because the Service depends on a Storage abstraction, I can add a database-backed implementation later without fundamentally changing the API.
-
-**37. What is the lookup time complexity?**
-
-Go map lookup is expected `O(1)` on average. This describes the map lookup, not the total request latency.
-
-**38. Is a regular Go map safe for concurrent access?**
-
-A regular map is not safe for concurrent reads and writes without synchronization. Verify whether the storage implementation uses a mutex or another safe approach. If not, add synchronization and concurrent tests; the race detector can help find data races.
-
-**39. How would you scale the project?**
-
-I would add persistent storage such as PostgreSQL, enforce unique short codes, add indexes and rate limiting, and introduce monitoring and deployment automation. Redis could be evaluated as a cache for frequently accessed mappings. Multiple application instances should share a consistent persistent store.
-
-**40. Why PostgreSQL instead of only Redis?**
-
-PostgreSQL offers durable relational storage and transaction support, making it a good source of truth. Redis can provide fast lookups and caching; its durability depends on configuration. The choice depends on the requirements.
-
-### G. Security and production readiness
-
-**41. What security issues can a URL Shortener face?**
-
-It can hide phishing, malicious destinations, and spam. Other concerns include code guessing and abuse of the shortening endpoint. Production systems may need rate limiting, abuse reporting, monitoring, and destination screening.
-
-**42. What is rate limiting?**
-
-It limits how many requests a client can make during a defined period. It can reduce automated abuse and resource exhaustion.
-
-**43. Does URL validation prevent SSRF?**
-
-No. Checking the scheme and host is not enough to prevent Server-Side Request Forgery. SSRF is especially relevant if the server fetches user-supplied URLs. Such a design needs careful destination/IP validation, redirect controls, and network restrictions. The current basic shortening flow does not establish that a destination is safe.
-
-**44. Are random short codes authentication tokens?**
-
-No. They identify URL mappings and are not a replacement for authentication or authorization. Randomness can make codes harder to guess, but it does not provide full access control.
-
-**45. What would you improve before production?**
-
-I would add persistent storage, concurrency-safe operations, collision handling, request-size limits, rate limiting, structured logging, graceful shutdown, stronger error handling, integration tests, and monitoring.
+The server looks up the code and redirects to the original URL.
 
 ---
 
-## 6. Practical Code Walkthrough
+# Project Status
 
-Be ready to open these files and explain the relevant code:
+**Current status: Functional learning/prototype project**
 
-| Interview question | File to show |
-|---|---|
-| Where does the application start? | `cmd/server/main.go` |
-| Where is URL validation implemented? | `internal/service/url.go` |
-| Where is the short code generated? | Service code using `crypto/rand` |
-| Where are URLs stored? | `internal/storage/memory.go` |
-| How are HTTP requests handled? | `internal/handler/url.go` |
-| How does redirect work? | Handler redirect logic |
-| How are errors translated to status codes? | Service error returns and Handler |
-| How is redirect tested? | `internal/handler/url_test.go` |
-| How are components wired together? | `cmd/server/main.go` |
+Implemented:
 
-### Code concepts to revise
+- URL shortening
+- Redirects
+- URL validation
+- Random short-code generation
+- In-memory storage
+- Layered architecture
+- Service, storage, and handler tests
 
-- `http.Handler` and `http.HandlerFunc`
-- `http.Request` and `http.ResponseWriter`
-- `json.NewDecoder` and `json.NewEncoder`
-- `url.Parse`
-- `crypto/rand`
-- Interfaces and dependency injection
-- Error propagation
-- `httptest.NewRecorder()` and `httptest.NewRequest()`
-- Go maps and concurrent access
+Planned improvements:
 
-**Important:** Explain what the code currently does, not only what a robust design should do. For example, if collision retry is not implemented, describe it as a planned improvement.
+- Persistent database
+- Collision handling
+- Concurrency-safe storage
+- Rate limiting
+- Analytics
+- Better production observability
+- Distributed deployment
 
 ---
 
-## 7. Handling Questions You Cannot Answer
+# Interview Preparation
 
-Use this structure:
+If I discuss this project in an interview, I should be able to explain the implementation rather than only describe the features.
 
-1. State what you know.
-2. Identify what needs verification.
-3. Explain how you would approach it.
+The main things I should know are:
 
-Example:
+1. **Why I chose Go**
+2. **Why I separated Handler, Service, and Storage**
+3. **How `POST /shorten` works from request to response**
+4. **How the redirect flow works**
+5. **How URL validation works**
+6. **Why I used an interface for Storage**
+7. **How dependency injection is used**
+8. **Why `crypto/rand` is used**
+9. **Why in-memory storage was chosen initially**
+10. **What happens after a server restart**
+11. **Why a regular map needs synchronization for concurrent access**
+12. **How I would handle short-code collisions**
+13. **How I tested the HTTP handlers**
+14. **What I would change before production**
 
-> Currently, I am using an in-memory map for storage. I know that a regular Go map is not safe for concurrent writes without synchronization. I would verify the current implementation and, if needed, protect map access with a mutex. I would also add concurrent tests and run the Go race detector.
-
-Useful phrases:
-
-- “I haven't implemented that feature yet, but I understand how I would approach it.”
-- “I would need to check the current implementation before making that claim.”
-- “This is a limitation of the current version that I plan to address.”
+The important part is to be honest about what is implemented and what is still a planned improvement.
 
 ---
 
-## 8. Pre-Interview Checklist
+## If I Don't Know an Interview Question
 
-- [ ] Explain the project in 60–90 seconds.
-- [ ] Walk through `main.go`, Handler, Service, and Storage.
-- [ ] Explain `POST /shorten` from request to response.
-- [ ] Explain redirect lookup, `302`, and the `Location` header.
-- [ ] Explain URL validation and `400`, `404`, and `405`.
-- [ ] Revise interfaces, dependency injection, maps, errors, and `crypto/rand`.
-- [ ] Explain tests and `go test ./...`.
-- [ ] Explain in-memory persistence, concurrency, collisions, and future improvements.
+I would avoid guessing.
 
-### Final practice
+A good way to answer is:
 
-1. Run `go test ./...`.
-2. Start the server and shorten a valid URL.
-3. Open the generated short URL and verify the redirect.
-4. Submit an invalid URL and verify the `400` response.
-5. Try a nonexistent short code and verify the `404` response.
-6. Open the code and practise explaining the architecture aloud.
+> I haven't implemented that yet, but I understand the general approach. I would first verify the current implementation, then make the change in the appropriate layer and add tests for it.
 
-**Main goal:** Be able to explain the decisions behind your implemented code and openly identify its limitations. You do not need to pretend the project is finished.
+Or:
+
+> I would need to check the current implementation before making that claim. My understanding is that the current limitation is ____, and I would address it by ____.
+
+This is better than claiming that a feature exists when it doesn't.
+
+---
+
+## Final Checklist
+
+Before discussing the project, I should be able to:
+
+- [ ] Explain the project in 60–90 seconds
+- [ ] Walk through `main.go`
+- [ ] Explain the Handler layer
+- [ ] Explain the Service layer
+- [ ] Explain the Storage layer
+- [ ] Explain `POST /shorten`
+- [ ] Explain `GET /{shortCode}`
+- [ ] Explain `302` and the `Location` header
+- [ ] Explain `400`, `404`, and `405`
+- [ ] Explain URL validation
+- [ ] Explain interfaces
+- [ ] Explain dependency injection
+- [ ] Explain `crypto/rand`
+- [ ] Explain map lookup
+- [ ] Explain the current in-memory limitation
+- [ ] Explain concurrency concerns
+- [ ] Explain collision handling
+- [ ] Run `go test ./...`
+- [ ] Explain the existing tests
+- [ ] Explain how I would scale the system
+
+---
+
+## Final Note
+
+I built this project as a practical way to learn backend development with Go.
+
+The current implementation is intentionally small, but I understand the architecture, the trade-offs, and the areas that would need improvement for production.
+
+My goal is not to present it as a finished large-scale system. The value of the project is that I can explain **why I made the decisions I made, how the current implementation works, and how I would evolve it as the requirements grow.**
