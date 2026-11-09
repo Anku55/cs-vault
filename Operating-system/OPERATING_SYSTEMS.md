@@ -1,5 +1,5 @@
 # Operating Systems Roadmap
-
+- [Must-Do OS Topics for Backend](#must-do-operating-systems-topics)
 ---
 
 # 1. OS Fundamentals ⭐⭐⭐⭐⭐
@@ -1578,3 +1578,135 @@ TCP Socket
   ↓
 Network
 ```
+#  Must-Do Operating Systems Topics 
+
+## 1. OS Fundamentals & System Calls
+- [ ] OS, Kernel, User Space, Kernel Space
+- [ ] User Mode vs Kernel Mode
+- [ ] System Calls and their lifecycle
+- [ ] Interrupts, Exceptions, Traps
+- [ ] `fork()`, `exec()`, `wait()`, `read()`, `write()`
+
+## 2. Processes & Threads
+- [ ] Program vs Process
+- [ ] Process States and PCB
+- [ ] Process Creation and Termination
+- [ ] Parent, Child, Orphan, Zombie Processes
+- [ ] Process vs Thread
+- [ ] Context Switching
+- [ ] Process vs Thread Memory
+- [ ] Thread vs Goroutine
+
+## 3. CPU Scheduling
+- [ ] Preemptive vs Non-preemptive Scheduling
+- [ ] FCFS, SJF, SRTF
+- [ ] Priority Scheduling
+- [ ] Round Robin
+- [ ] Waiting, Turnaround, Response Time
+- [ ] CPU Utilization and Throughput
+
+## 4. Concurrency & Synchronization
+- [ ] Concurrency vs Parallelism
+- [ ] Race Condition vs Data Race
+- [ ] Critical Section and Mutual Exclusion
+- [ ] Mutex, Semaphore
+- [ ] Condition Variables
+- [ ] Atomic Operations
+- [ ] Read-Write Locks
+- [ ] Deadlocks and Four Necessary Conditions
+- [ ] Starvation vs Livelock
+- [ ] Thread Safety
+
+## 5. Memory Management
+- [ ] Stack vs Heap
+- [ ] Process Address Space
+- [ ] Virtual Memory
+- [ ] Paging and Page Tables
+- [ ] TLB and Page Faults
+- [ ] Page Replacement: FIFO, LRU, Optimal
+- [ ] Memory Fragmentation
+- [ ] Memory Leaks
+- [ ] Copy-on-Write
+- [ ] `mmap()` (Conceptual)
+
+## 6. I/O & File Systems
+- [ ] File Descriptors
+- [ ] File Descriptor Table
+- [ ] Blocking vs Non-blocking I/O
+- [ ] Synchronous vs Asynchronous I/O
+- [ ] Buffered vs Unbuffered I/O
+- [ ] Inodes and File Metadata
+- [ ] Hard Links vs Soft Links
+- [ ] File Permissions
+- [ ] Page Cache
+- [ ] `fsync()`
+- [ ] Sequential vs Random I/O
+
+## 7. Inter-Process Communication (IPC)
+- [ ] Pipes and Named Pipes
+- [ ] Message Queues
+- [ ] Shared Memory
+- [ ] Signals
+- [ ] Sockets
+- [ ] Pipe vs Shared Memory
+
+## 8. Linux Fundamentals
+- [ ] Linux Process Management: `ps`, `top`, `htop`
+- [ ] Process Signals: `kill`, `kill -9`
+- [ ] Linux Memory Monitoring: `free`, `vmstat`
+- [ ] `/proc` Filesystem
+- [ ] File Descriptor Monitoring: `lsof`
+- [ ] Linux Permissions: `chmod`, `chown`
+- [ ] Linux Process and Thread Monitoring
+
+## 9. OS Networking
+- [ ] TCP vs UDP Sockets
+- [ ] `bind()`, `listen()`, `accept()`, `connect()`
+- [ ] Socket as File Descriptor
+- [ ] TCP States and Socket Buffers
+- [ ] Blocking vs Non-blocking Sockets
+- [ ] `select()`, `poll()`, `epoll()` (Conceptual)
+- [ ] Event Loop
+- [ ] Reactor Pattern
+
+## 10. Go Runtime & Scheduler
+- [ ] Goroutine vs OS Thread
+- [ ] G-M-P Scheduler
+- [ ] Goroutine Scheduling
+- [ ] Work Stealing
+- [ ] Goroutine Stack and Stack Growth
+- [ ] Blocking System Calls
+- [ ] Go Network Poller
+- [ ] Garbage Collector
+- [ ] Escape Analysis
+- [ ] Heap Allocation and GC Pressure
+- [ ] Goroutine Leaks
+
+## 11. Graceful Shutdown & Fault Tolerance
+- [ ] SIGINT vs SIGTERM vs SIGKILL
+- [ ] Signal Handling
+- [ ] Graceful Shutdown
+- [ ] Context Cancellation
+- [ ] Stop Accepting New Requests
+- [ ] Finish Active Requests
+- [ ] Worker Shutdown
+- [ ] Buffer Flushing
+- [ ] Timeout and Retry
+- [ ] Process Crash and Recovery
+- [ ] Health Checks
+
+---
+
+## 📌 Backend Systems — Additional Topics
+- [ ] `mmap()` and Memory-Mapped Files
+- [ ] Page Cache Internals
+- [ ] `fsync()` and Data Durability
+- [ ] Append-Only Logs
+- [ ] Sequential Disk Writes
+- [ ] Ring Buffers
+- [ ] Backpressure
+- [ ] CPU Cache and Cache Lines
+- [ ] False Sharing
+- [ ] Profiling: `strace`, `perf`, `pprof`
+- [ ] Containers, Namespaces, cgroups
+- [ ] Resource Limits
