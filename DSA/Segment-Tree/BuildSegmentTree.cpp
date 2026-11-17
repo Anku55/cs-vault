@@ -4,6 +4,27 @@ using namespace std;
 int n;
 vector<int> a, seg;
 
+int query(int ind, int low, int high, int l, int r) {
+
+    // No overlap
+    if (high < l || low > r) {
+        return 0;
+    }
+
+    // Complete overlap
+    if (low >= l && high <= r) {
+        return seg[ind];
+    }
+
+    // Partial overlap
+    int mid = (low + high) / 2;
+
+    int left = query(2 * ind + 1, low, mid, l, r);
+    int right = query(2 * ind + 2, mid + 1, high, l, r);
+
+    return left + right;
+}
+
 void build(int ind, int low, int high) {
     // Base case: leaf node
     if (low == high) {
@@ -30,6 +51,7 @@ int main() {
     for (int x : seg) {
         cout << x << " ";
     }
+    cout << query(0, 0, n - 1, 1, 3);
 
     return 0;
 }
