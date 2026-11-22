@@ -1,10 +1,5 @@
 # Computer Networks -- Unit 1 Notes
 
-> Detailed study notes for B.Tech Computer Science and Engineering.
-> Primary reference: *Computer Networking: A Top-Down Approach*, 7th
-> Edition, James F. Kurose and Keith W. Ross. Supplementary explanations
-> are included for syllabus topics not covered in depth by the textbook.
-
 ## Table of Contents
 
 -   [1.1 Network Fundamentals](#11-network-fundamentals)
